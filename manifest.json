@@ -3,7 +3,7 @@
     "name": "AutoReview for Power Automate",
     "short_name": "AutoReview",
     "description": "Create Automated Review of Power Automate Cloud Flows",
-    "start_url": "/AutoReview-PWA/",
+    "start_url": "/",
     "background_color": "#044288",
     "theme_color": "#ffffff",
     "orientation": "any",
@@ -34,25 +34,25 @@
     ],
     "screenshots" : [
       {
-        "src": "assets/img/autoreview webapp.PNG",
+        "src": "/assets/img/autoreview webapp.PNG",
         "sizes": "1280x800",
         "type": "image/png",
         "platform": "wide"
       },
       {
-        "src": "assets/img/autoreview (1).PNG",
+        "src": "/assets/img/autoreview (1).PNG",
         "sizes": "1280x800",
         "type": "image/png",
         "platform": "wide"
       },
       {
-        "src": "assets/img/autoreview (2).PNG",
+        "src": "/assets/img/autoreview (2).PNG",
         "sizes": "1280x800",
         "type": "image/png",
         "platform": "wide"
       },
       {
-        "src": "assets/img/autoreview (3).PNG",
+        "src": "/assets/img/autoreview (3).PNG",
         "sizes": "1280x800",
         "type": "image/png",
         "platform": "wide"
