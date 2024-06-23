@@ -1,61 +1,67 @@
 {
-    "lang": "en-us",
-    "name": "AutoReview for Power Automate",
-    "short_name": "AutoReview",
-    "description": "Create Automated Review of Power Automate Cloud Flows",
-    "start_url": "/",
-    "background_color": "#044288",
-    "theme_color": "#ffffff",
-    "orientation": "any",
-    "display": "standalone",
-    "icons": [
-      {
-        "src": "/icon v2 128.png",
-        "sizes": "128x128"
-      },
-      {
-        "src": "/icon v2 192.png",
-        "sizes": "192x192"
-      },
-      {
-        "src": "/icon v2 512.png",
-        "sizes": "512x512"
-      }
-    ],
-    "id": "powerdevbox_autoreview",
-    "display_override": [
-      "window-controls-overlay",
-      "standalone",
-      "minimal-ui"
-    ],
-    "categories": [
-      "productivity",
-      "utilities"
-    ],
-    "screenshots" : [
-      {
-        "src": "/assets/img/autoreview webapp.PNG",
-        "sizes": "1280x800",
-        "type": "image/png",
-        "platform": "wide"
-      },
-      {
-        "src": "/assets/img/autoreview (1).PNG",
-        "sizes": "1280x800",
-        "type": "image/png",
-        "platform": "wide"
-      },
-      {
-        "src": "/assets/img/autoreview (2).PNG",
-        "sizes": "1280x800",
-        "type": "image/png",
-        "platform": "wide"
-      },
-      {
-        "src": "/assets/img/autoreview (3).PNG",
-        "sizes": "1280x800",
-        "type": "image/png",
-        "platform": "wide"
-      }
-    ]
+  "lang": "en-us",
+  "name": "AutoReview for Power Automate",
+  "short_name": "AutoReview",
+  "description": "Create Automated Review of Power Automate Cloud Flows",
+  "start_url": "/",
+  "background_color": "#044288",
+  "theme_color": "#ffffff",
+  "orientation": "any",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/icon v2 128.png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "/icon v2 192.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon v2 512.png",
+      "sizes": "512x512"
+    }
+  ],
+  "id": "powerdevbox_autoreview",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
+  "categories": [
+    "productivity",
+    "utilities"
+  ],
+  "screenshots": [
+    {
+      "src": "assets/img/autoreview webapp.PNG",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "platform": "wide"
+    },
+    {
+      "src": "assets/img/autoreview (1).PNG",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "platform": "wide"
+    },
+    {
+      "src": "assets/img/autoreview (2).PNG",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "platform": "wide"
+    },
+    {
+      "src": "assets/img/autoreview (3).PNG",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "platform": "wide"
+    }
+  ],
+  "scope": "autoreview.powerdevbox.com",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 340
   }
+}
