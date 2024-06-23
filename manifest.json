@@ -10,15 +10,15 @@
     "display": "standalone",
     "icons": [
       {
-        "src": "/AutoReview-PWA/icon v2 128.png",
+        "src": "icon v2 128.png",
         "sizes": "128x128"
       },
       {
-        "src": "/AutoReview-PWA/icon v2 192.png",
+        "src": "icon v2 192.png",
         "sizes": "192x192"
       },
       {
-        "src": "/AutoReview-PWA/icon v2 512.png",
+        "src": "icon v2 512.png",
         "sizes": "512x512"
       }
     ],
