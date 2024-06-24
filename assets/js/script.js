@@ -1,15 +1,11 @@
-navigator.serviceWorker.addEventListener('message', async event => {
-    if (event.data.file) {
-      const file = event.data.file;
-  
-    }
-  });///By David Wyatt
+///By David Wyatt
   let sDefinition = "";
   let sDefinitionParsed = "";
   let oReport;
   let oLiveReport;
   let sCustomList = null;
   let sReview;
+  let aFlows=[];
   
   let aConnectionTier;
   let i = 0;
@@ -116,23 +112,24 @@ navigator.serviceWorker.addEventListener('message', async event => {
     fileInput.dispatchEvent(new MouseEvent("click"));
 
   async function selectFile() {
-    try {
+    //try {
       fileInputButton.disabled = true;
       unpackNestedZipFiles(fileInput.files[0]);   
-    } catch (error) {
-      console.log(error);
-    } finally {
+ //   } catch (error) {
+  //    console.log(error);
+ //   } finally {
       fileInputButton.disabled = false;
       fileInput.value = ""; 
-    }
+   // }
   }
   
   async function unpackNestedZipFiles(file) {
   //try{
     pLoading.innerText= "Loading...";
+    console.log(file);
       if (file.name.endsWith('.zip') || file.name.endsWith('.msapp')) {
         const zipReader = new zip.ZipReader(new zip.BlobReader(file));
-  
+        console.log(zipReader)
         const entries = await zipReader.getEntries();
         console.log(entries);
         let entryIndex=0;
@@ -149,21 +146,22 @@ navigator.serviceWorker.addEventListener('message', async event => {
               !entries.find((entry) => !entry.filenameUTF8)
             );
             for (const entry of entries) {
-                entryIndex++;
+                
                 const fileData = await entry.getData(new zip.TextWriter());
               if (
                 entry.filename.includes("definition.json") ||
                 entry.filename.includes("Workflows/")
               ) {
+                entryIndex++;
                 if (iDefinitionFind == iDefinitionCount) {
                   pLoading.innerHTML = "Flow Found...Loading...";
                   review(entry, "flow",fileData);
                   let node = document.createElement("li");
-                  node.innerHTML=entry.filename.replace("Workflows/", "").split("-")[0]                  
+                  node.innerHTML=entry.filename.replace("Workflows/", "").replace(regExpFileID,"").replace("-.json","");                  
                   node.value = entryIndex;
                   lSolution.appendChild(node);
                   node.addEventListener("click", function () {
-                    review(entries[this.value], "flow");
+                    review(entries[this.value], "flow",fileData);
                   });
                 } else {
                   tSolution.style = "display: block";
@@ -172,15 +170,16 @@ navigator.serviceWorker.addEventListener('message', async event => {
                     "display: block; height:124px; overflow-y:auto; overflow-x:hidden";
                   const node = document.createElement("li");
                   const textnode = document.createTextNode(
-                    entry.filename.replace("Workflows/", "").split("-")[0]
+                    entry.filename.replace("Workflows/", "").replace(regExpFileID,"").replace("-.json","")   
                   );
                   node.appendChild(textnode);
                   node.value = entryIndex;
                   lSolution.appendChild(node);
                   node.addEventListener("click", function () {
-                    review(entries[this.value], "flow");
+                    review(entries[this.value], "flow",fileData);
                   });
                 }
+                aFlows.push(entries[this.value]);
                 iDefinitionCount++;
               } else if (entry.filename.includes("customizations.xml")) {
                 review(entry, "customizations",fileData);
@@ -220,10 +219,10 @@ navigator.serviceWorker.addEventListener('message', async event => {
   }
 
   async function review(entry, type,sDefinition) {
-    try {
+   // try {
         if (type == "flow") {
         sDefinitionParsed = JSON.parse(sDefinition);
-        
+        console.log(entry)
         butReview.style="display:block;  width:100%;";
         butDefinition.style = "width:100%; display:block";
         oReport = null;
@@ -432,10 +431,10 @@ navigator.serviceWorker.addEventListener('message', async event => {
         }
         }
 
-    } catch (error) {
+  /*  } catch (error) {
       pLoading.innerHTML = "Unexpected Error: " + error;
       pLoading.style.color = "red";
-    }
+ } */  
   }
 
 ///////////////////////
@@ -1622,5 +1621,14 @@ navigator.serviceWorker.addEventListener('message', async event => {
     return array.filter(item => item.flow !== idToRemove);
   }
   
+  
+  navigator.serviceWorker.addEventListener('message', async event => {
+    console.log(event)
+    if (event.data.file) {
+      const file = event.data.file;
+      console.log(file)
+      unpackNestedZipFiles(file)
+    }
+  });
   
   
