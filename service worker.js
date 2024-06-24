@@ -32,3 +32,15 @@ self.addEventListener('fetch', event => {
     }
   })());
 });
+
+self.addEventListener('launch', event => {
+  event.waitUntil(async function() {
+    const client = await self.clients.openWindow('/');
+    const file = event.file;  // Assuming the event contains the file
+
+    // Post the file to the client
+    client.postMessage({
+      file: file
+    });
+  }());
+});
