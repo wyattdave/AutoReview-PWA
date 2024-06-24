@@ -153,15 +153,17 @@
                 entry.filename.includes("Workflows/")
               ) {
                 entryIndex++;
+                console.log(entry,"flow")
                 if (iDefinitionFind == iDefinitionCount) {
                   pLoading.innerHTML = "Flow Found...Loading...";
+                  
                   review(entry, "flow",fileData);
                   let node = document.createElement("li");
                   node.innerHTML=entry.filename.replace("Workflows/", "").replace(regExpFileID,"").replace("-.json","");                  
                   node.value = entryIndex;
                   lSolution.appendChild(node);
                   node.addEventListener("click", function () {
-                    review(entries[this.value], "flow",fileData);
+                    review(entry, "flow",fileData);
                   });
                 } else {
                   tSolution.style = "display: block";
@@ -176,10 +178,10 @@
                   node.value = entryIndex;
                   lSolution.appendChild(node);
                   node.addEventListener("click", function () {
-                    review(entries[this.value], "flow",fileData);
+                    review(entry, "flow",fileData);
                   });
                 }
-                aFlows.push(entries[this.value]);
+            
                 iDefinitionCount++;
               } else if (entry.filename.includes("customizations.xml")) {
                 review(entry, "customizations",fileData);
@@ -222,7 +224,7 @@
    // try {
         if (type == "flow") {
         sDefinitionParsed = JSON.parse(sDefinition);
-        console.log(entry)
+        console.log(entry,type)
         butReview.style="display:block;  width:100%;";
         butDefinition.style = "width:100%; display:block";
         oReport = null;
