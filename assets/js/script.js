@@ -231,6 +231,8 @@
             sId=entry.filename.match(regExpFileID)[0]
         }
         // try {
+          aConnectionTier = JSON.parse(localStorage.getItem("connectionTier"));
+          
         
             oReport= CreateReview(
                 sDefinition,
@@ -928,6 +930,7 @@
     url: urlConnectors,
     success: function (result) {
       aConnectionTier = JSON.parse(result).value;
+      localStorage.setItem("connectionTier",JSON.stringify(aConnectionTier));
       
     }
   }).fail(function (data) {
