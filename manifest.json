@@ -63,5 +63,13 @@
   "prefer_related_applications": false,
   "edge_side_panel": {
     "preferred_width": 340
-  }
+  },
+  "file_handlers": [
+    {
+      "action": "/handle-zip",
+      "accept": {
+        "application/zip": [".zip"]
+      }
+    }
+  ]
 }
