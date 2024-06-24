@@ -1621,14 +1621,16 @@
     return array.filter(item => item.flow !== idToRemove);
   }
   
-  
-  navigator.serviceWorker.addEventListener('message', async event => {
-    console.log(event)
-    if (event.data.file) {
-      const file = event.data.file;
-      console.log(file)
-      unpackNestedZipFiles(file)
-    }
-  });
+  if ('launchQueue' in window) {
+    launchQueue.setConsumer(async launchParams => {
+        for (const fileHandle of launchParams.files) {
+            const file = await fileHandle.getFile();
+            console.log(file)
+            unpackNestedZipFiles(file)
+        }
+    });
+}
+
+ 
   
   
