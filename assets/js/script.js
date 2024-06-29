@@ -150,7 +150,7 @@
                 const fileData = await entry.getData(new zip.TextWriter());
               if (
                 entry.filename.includes("definition.json") ||
-                entry.filename.includes("Workflows/")
+                (entry.filename.includes("Workflows/") && !entry.filename.includes("apisMap") && !entry.filename.includes("connectionsMap") )
               ) {
                 entryIndex++;
                 console.log(entry,"flow")
