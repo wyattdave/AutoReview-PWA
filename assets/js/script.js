@@ -236,7 +236,7 @@ async function review(entry, type, sDefinition) {
         sId = entry.filename.match(regExpFileID)[0];
       }
 
-      aConnectionTier = JSON.parse(localStorage.getItem("connectionTier"));
+      //aConnectionTier = JSON.parse(localStorage.getItem("connectionTier"));
 
       oReport = CreateReview(
         sDefinition,
@@ -962,7 +962,8 @@ $.ajax({
     localStorage.setItem("connectionTier", JSON.stringify(aConnectionTier));
   },
 }).fail(function (data) {
-  aConnectionTier = null;
+  aConnectionTier = aConnectionTierBackup.value;
+  console.log(aConnectionTier)
 });
 
 function apiLink(type, step, hashId) {
@@ -1125,7 +1126,7 @@ function CreateReview(
     "concat('https://make.powerautomate.com/manage/environments/',workflow()?['tags']?['environmentName']";
   let oInput;
   let sError = "";
-
+console.log(aConnectionTier)
   const regExpEnviron = new RegExp("@parameters(.*?)\\)", "gm");
   const regExpEnviron2 = new RegExp("@{parameters(.*?)\\)", "gm");
 
