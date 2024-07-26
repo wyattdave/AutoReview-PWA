@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AutoReview Solution Report</title>
+    <link href="assets/css/mui.min-ar.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style-ar.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <script src="assets/js/lib/mui.min.js"></script>
+</head>
+
+<body>
+<div>
+    <div class="mui-appbar midBlue sticky" style="padding-left:5px;">
+        <table style="width:100%" >
+            <tr style="vertical-align:middle;">
+            <td class="mui--appbar-height"><h2>AutoReview</h2></td>
+            <td></td>
+            <td><div class="mui--text-white mui--text-body3" style="color:white; text-align:right;" id="show-json">JSON Schema</div></td>
+            <td class="mui--appbar-height" style="text-align:right"><img src="assets/img/logo.svg" alt="Logo" id="restScroll" style="height:50px; float:right; padding-right:20px"/></td>
+            </tr>
+        </table>
+    </div>
+    <div id="content" class="mui-container-fluid">
+       
+        <div class="mui-row">
+            <div> <br>
+           
+                <div class="mui-row">
+                    <div class="mui-col-md-6">
+                        <div class="grid-container">
+                            <div class="grid-item">
+                                <div class="mui-panel" style="text-align: left;">
+                                    <div class="mui--text-black mui--text-title">Name</div>
+                                    <div class="mui--text-black mui--text-body2 overflowClass" contentEditable="true" id="target-flowName" >{flowName}</div>
+                                </div>
+                            </div>
+                            <div class="grid-item">
+                                <div class="mui-panel" style="text-align: left;">
+                                    <div class="mui--text-black mui--text-title">Version</div>
+                                    <div class="mui--text-black mui--text-body2">{flowId}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mui-col-md-6">
+                        <div class="grid-container">
+                            <div class="grid-item">
+                                <div class="mui-panel" style="text-align: left;">
+                                    <div class="mui--text-black mui--text-title">Publisher</div>
+                                    <div class="mui--text-black mui--text-body2 overflowClass" contentEditable="true">{owner}</div>      
+                                </div>
+                            </div>
+                            <div class="grid-item">
+                                <div class="mui-panel" style="text-align: left;">
+                                    <div class="mui--text-black mui--text-title">Date</div>
+                                    <div class="mui--text-black mui--text-body2">{date}</div>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div id="tables"> 
+                    <div class="mui-panel">
+                        <div class="mui--text-black-54 mui--text-title">Connection References
+                        </div>
+                        <div class="mui-divider"></div> <br> {connectionsTable} 
+                    </div> 
+                    <br>
+                    <div class="mui-panel">
+                        <div class="mui--text-black-54 mui--text-title">Environment Variables
+                        </div>
+                        <div class="mui-divider"></div> <br> {variablesTable} 
+                    </div>    
+                    <br>
+                    <div class="mui-panel">
+                        <div class="mui--text-black-54 mui--text-title">Missing Dependencies
+                        </div>
+                        <div class="mui-divider"></div> <br> {dependenciesTable} 
+                    </div>    
+                    <br>
+                </div> 
+                <div class="mui-panel" style="display: none;" id="json">
+                    <div class="mui--text-black-54 mui--text-title">JSON Schema
+                    </div>
+                    <div class="mui-divider"></div> <br> <pre>{json}</pre> 
+                </div>              
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+</body>
+<script src="assets/js/solution.min.js"></script>
+
+</html>
