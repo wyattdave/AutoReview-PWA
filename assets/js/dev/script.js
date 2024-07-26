@@ -1427,7 +1427,7 @@ function CreateReview(
     "concat('https://make.powerautomate.com/manage/environments/',workflow()?['tags']?['environmentName']";
   let oInput;
   let sError = "";
-
+console.log(aConnectionTier)
   const regExpEnviron = new RegExp("@parameters(.*?)\\)", "gm");
   const regExpEnviron2 = new RegExp("@{parameters(.*?)\\)", "gm");
 
