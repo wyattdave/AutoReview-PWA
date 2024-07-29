@@ -132,11 +132,11 @@ if (
 ) {
   oSaved = JSON.parse(localStorage.getItem("saved"));
   oSavedDef = JSON.parse(localStorage.getItem("definition"));
-  iLoad.style = "display:block;";
+  ///iLoad.style = "display:block;";
 } else {
   oSaved = null;
   oSavedDef = null;
-  iLoad.style = "display:none;";
+  ///iLoad.style = "display:none;";
 }
 localStorage.setItem("naming",JSON.stringify(oNamingTemplate));
 localStorage.setItem("complexity",JSON.stringify(aComplexityTemplate));
@@ -324,7 +324,7 @@ function OpenSolution() {
   SaveData();
   i = sessionStorage.getItem("windowCounter");
   sSolutionHTML= listSolution(oSolution)
-  const newWindow = window.open("", "Solution Contents" + new Date().getTime() + i);
+  const newWindow = window.open("./solution.html", "Solution Contents" + new Date().getTime() + i);
   newWindow.document.write(
     sSolutionHTML
   );
