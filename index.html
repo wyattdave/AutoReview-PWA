@@ -14,38 +14,38 @@
 		<link href="https://fonts.googleapis.com/css?family=Maven+Pro|Muli|Droid+Sans+Mono|Istok+Web" rel="stylesheet"	type="text/css">
 	</head>
 	<body>		
-			<div class="mui-appbar midBlue" id ="header" style="padding-left:5px">
-				<table style="width:100%" >
-					<tr style="vertical-align:middle;">
-					<td class="mui--appbar-height"><h2>AutoReview</h2></td>
-					<td class="mui--appbar-height" style="text-align:right"><img src="assets/img/logo.svg" alt="Logo" style="height:50px; float:right; padding-right:20px"/></td>
-					</tr>
-				</table>
-			</div>
-			<div class="mui-panel center" style="width: 320px;height:auto; padding-left:20px; padding-right:20px;">				
-				<div class="form-group">
-					<a href="#" id="file-input-button"style="width:100%;"><i class="fa-solid fa-file-import" style="color: #585858;"></i> Select Export</a><br>
-					<a href="#" id="loadSaved" style="display:none;"><i class="fa-solid fa-retweet" style="color: #585858;"></i> Load Last Flow</a>
-					
-					<div id="admin">
-						<div class="mui-divider"></div>
-						<a href="https://powerdevbox.com/autoreview%20guide.html" rel="noopener noreferrer" target="_blank" ><i class="fa-solid fa-circle-info" style="color: #585858;"></i> Guide</a>	<br>				
-						<a href="#" id="shortcut-button"><i class="fa-solid fa-keyboard" style="color: #585858;"></i> Shortcut Keys</a><br>
-						<div class="mui-divider"></div>
-						<a href="/Configs/Config.zip" download><i class="fa-solid fa-download" style="color: #585858;"></i> Download Configs Templates</a><br>
-						<a href="#" id="restConfigs"><i class="fa-solid fa-screwdriver-wrench" style="color: #585858;"></i> Restore Default Configs</a><br>
-						<div class="mui-divider"></div>
-						<a href="#" id="bugEmail"><i class="fa-solid fa-bug" style="color: #585858;"></i> Report Bug</a><br>
-						<a href="https://www.buymeacoffee.com/Wyattdave" rel="noopener noreferrer" target="_blank" ><i class="fa-solid fa-mug-hot" style="color: #585858;"></i> Buy Me a Coffee</a>
-					</div>
-					<br>
-					<input type="file" id="file-input" accept="application/zip" style="display: none;"/>
+		<div class="mui-appbar midBlue" id ="header" style="padding-left:5px">
+			<table style="width:100%" >
+				<tr style="vertical-align:middle;">
+				<td class="mui--appbar-height"><h2>AutoReview</h2></td>
+				<td class="mui--appbar-height" style="text-align:right"><img src="assets/img/logo.svg" alt="Logo" style="height:50px; float:right; padding-right:20px"/></td>
+				</tr>
+			</table>
+		</div>
+		<div class="mui-panel center" style="width: 320px;height:auto; padding-left:20px; padding-right:20px;">				
+			<div class="form-group">
+				<a href="#" id="file-input-button"style="width:100%;"><i class="fa-solid fa-file-import" style="color: #585858;"></i> Select Export</a><br>
+				<a href="#" id="loadSaved" style="display:none;"><i class="fa-solid fa-retweet" style="color: #585858;"></i> Load Last Flow</a>
+				
+				<div id="admin">
 					<div class="mui-divider"></div>
-					<div id="solution-title" style="display: none;"><i class="fa-solid fa-box-archive"></i>Solution Contents</div>
-					<ol id="solution-container" style="display: none;"></ol>
-					<span style="display:block" id="version"><a href="https://powerdevbox.com" target="_blank"><img src="assets/img/power devbox black.png" style="height:20px;padding-right:10px"/></a><a href ="https://powerdevbox.com/autoreview%20log.html" target="_blank">v2.4.5</a></span>	
-					<div class="mui-divider" id="solution-divider"></div>
-					<p id="loading"></p>
+					<a href="https://powerdevbox.com/autoreview%20guide.html" rel="noopener noreferrer" target="_blank" ><i class="fa-solid fa-circle-info" style="color: #585858;"></i> Guide</a>	<br>				
+					<a href="#" id="shortcut-button"><i class="fa-solid fa-keyboard" style="color: #585858;"></i> Shortcut Keys</a><br>
+					<div class="mui-divider"></div>
+					<a href="/Configs/Config.zip" download><i class="fa-solid fa-download" style="color: #585858;"></i> Download Configs Templates</a><br>
+					<a href="#" id="restConfigs"><i class="fa-solid fa-screwdriver-wrench" style="color: #585858;"></i> Restore Default Configs</a><br>
+					<div class="mui-divider"></div>
+					<a href="#" id="bugEmail"><i class="fa-solid fa-bug" style="color: #585858;"></i> Report Bug</a><br>
+					<a href="https://www.buymeacoffee.com/Wyattdave" rel="noopener noreferrer" target="_blank" ><i class="fa-solid fa-mug-hot" style="color: #585858;"></i> Buy Me a Coffee</a>
+				</div>
+				<br>
+				<input type="file" id="file-input" accept="application/zip" style="display: none;"/>
+				<div class="mui-divider"></div>
+				<div id="solution-title" style="display: none;"><i class="fa-solid fa-box-archive"></i>Solution Contents</div>
+				<ol id="solution-container" style="display: none;"></ol>
+				<span style="display:block" id="version"><a href="https://powerdevbox.com" target="_blank"><img src="assets/img/power devbox black.png" style="height:20px;padding-right:10px"/></a><a href ="https://powerdevbox.com/autoreview%20log.html" target="_blank">v2.4.5</a></span>	
+				<div class="mui-divider" id="solution-divider"></div>
+				<p id="loading"></p>
 					<div id="csvDropdown" class ="padding" style="display: none;">
 						<div id="review-button" style="display:none;"><a href="#" ><i class="fa-solid fa-file-waveform" style="color: #585858;"></i> Review</a></div>
 						<div id="diagram-button" style="display:none;"><a href="#" ><i class="fa-solid fa-file-image" style="color: #585858;"></i> Diagram</a></div>

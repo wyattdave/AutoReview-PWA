@@ -4,14 +4,13 @@ let sDefinitionParsed = "";
 let oReport;
 let oLiveReport;
 let sCustomList = null;
-let sReview;
-let sReport;
+
 let aConnectionTier=aConnectionTierBackup.value;;
 let i = 0;
-let iWarning = 0;
+
 let iDefinitionFind = 0;
 let iDefinitionCount = 0;
-let user = "";
+
 let oSaved;
 let oSavedDef;
 let oRatings;
@@ -26,15 +25,23 @@ let aEnvironmentVar=[];
 let sEnvironment="";
 let oDependencies;
 const iResetStorage = 8;
+const regExpFileID = new RegExp("[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}","m");
 const sHtml =  '<html><head><meta name="color-scheme" content="dark"></head><body>';
-const regExpNewLine = new RegExp("(?:\r\n|\n\r|\r|\n|  )", "gm");//("(?:\r\n|\n\r|\r|\n| )", "gm");
-const regExpFormat = new RegExp("(?:{|})", "gm");
+//// html generator
+let iWarning = 0;
+let sReview;
+let sReport;
 const sPrem = '<img src="assets/img/premium-32.png" class="smallIcon" />';
 const sPrev = '<img src="assets/img/preview-32.png" class="smallIcon" />';
-const regExpFileID = new RegExp("[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}","m");
-const sExcepExpressionTemplate=
-"split(split(replace(replace(concat({containers}),'essage\":\"An action failed. No dependent actions succeeded','¬'),'essage\":\"The execution of template ','¬'),'essage\":\"')[1],'\"')[0]"
+/////
+////not used
+const regExpNewLine = new RegExp("(?:\r\n|\n\r|\r|\n|  )", "gm");//("(?:\r\n|\n\r|\r|\n| )", "gm");
+const regExpFormat = new RegExp("(?:{|})", "gm");
 let sortOrder;
+let user = "";
+/////
+
+
 
 const pLoading = document.getElementById("loading");
 const spanVersion = document.getElementById("version");
@@ -70,6 +77,7 @@ document.getElementById("compareFlows").addEventListener("click", OpenCompare);
 butSolution.addEventListener("click", OpenSolution);
 butShortcut.addEventListener("click", OpenShortcut);
 
+////platform
 let iReset=localStorage.getItem("reset");
 if (iReset != undefined && !bResetStorage) {
   if (iReset < iResetStorage) {
@@ -141,6 +149,17 @@ if (
 localStorage.setItem("naming",JSON.stringify(oNamingTemplate));
 localStorage.setItem("complexity",JSON.stringify(aComplexityTemplate));
 
+function SaveData(){
+  localStorage.setItem("saved", JSON.stringify(oReport));
+  localStorage.setItem("definition", JSON.stringify(sDefinitionParsed));
+  const oDiagramSave={
+    name:oReport.name,
+    id:oReport.id,
+    data:oReport.actionArray
+  }
+  sessionStorage.setItem("diagram", JSON.stringify(oDiagramSave));
+}
+/////////////////
 
 function DownloadCSV(sTable, data2) {
   const oTable = aDownloadConfig.find((item) => item.name == sTable);
@@ -192,16 +211,7 @@ function DownloadCSV(sTable, data2) {
     }
 }
 
-function SaveData(){
-  localStorage.setItem("saved", JSON.stringify(oReport));
-  localStorage.setItem("definition", JSON.stringify(sDefinitionParsed));
-  const oDiagramSave={
-    name:oReport.name,
-    id:oReport.id,
-    data:oReport.actionArray
-  }
-  sessionStorage.setItem("diagram", JSON.stringify(oDiagramSave));
-}
+
 
 function OpenReview() {
   SaveData();
@@ -341,6 +351,7 @@ function OpenBug() {
   const newWindow = window.open(sMailTemplate, "Bug Email");
 }
 
+////////platform
 function ResetConfigs() {
   localStorage.setItem("complexity", JSON.stringify(aComplexityTemplate));
   localStorage.setItem("ratings", JSON.stringify(oRatingsTemplate));
@@ -355,7 +366,7 @@ function ResetConfigs() {
   oConfigReference = oConfigReferenceTemplate;
   pLoading.innerHTML = "Config Reset to defaults";
 }
-
+////////////
 
 function loadSavedFlow() {
   generateReport(oSaved);
@@ -388,7 +399,7 @@ function csvConnections() {
   DownloadCSV("Connections", oSaved);
 }
 
-function review() {}
+//function review() {}
 
 /////////////////////////////
 const fileInput = document.getElementById("file-input");
@@ -500,7 +511,7 @@ async function unpackNestedZipFiles(file) {
           }
         }
       }
-      if (iDefinitionCount == 0) {
+      if (iDefinitionCount == 0 && !pLoading.innerHTML.includes("Updated")) {
         pLoading.innerHTML = "No Flows Found in Zip";
       }
 
@@ -515,6 +526,7 @@ async function unpackNestedZipFiles(file) {
   }
 }
 
+////processes files from zip
 async function review(entry, type, sDefinition) {
   try {
     if (type == "flow") {
@@ -655,7 +667,7 @@ async function review(entry, type, sDefinition) {
       aEnvironmentVar.push(xmlToJson.parse(sDefinition));
     } else if (type == "complexity") {
       pLoading.innerHTML = pLoading.innerHTML.replace(
-        "No Flows Found in Zip",
+        "Loading...",
         "<b>Config Updates:</b>"
       );
       let aJson = JSON.parse(sDefinition).aComplexityTemplate;
@@ -677,7 +689,7 @@ async function review(entry, type, sDefinition) {
       }
     } else if (type == "naming") {
       pLoading.innerHTML = pLoading.innerHTML.replace(
-        "No Flows Found in Zip",
+        "Loading...",
         "<b>Config Updates:</b>"
       );
       let oConfig = JSON.parse(sDefinition).oNamingTemplate;
@@ -699,7 +711,7 @@ async function review(entry, type, sDefinition) {
       }
     } else if (type == "scoring") {
       pLoading.innerHTML = pLoading.innerHTML.replace(
-        "No Flows Found in Zip",
+        "Loading...",
         "<b>Config Updates:</b>"
       );
       let aJson = JSON.parse(sDefinition).aScoringTemplate;
@@ -721,7 +733,7 @@ async function review(entry, type, sDefinition) {
       }
     } else if (type == "ratings") {
       pLoading.innerHTML = pLoading.innerHTML.replace(
-        "No Flows Found in Zip",
+        "Loading...",
         "<b>Config Updates:</b>"
       );
       let oConfig = JSON.parse(sDefinition).oRatingsTemplate;
@@ -762,7 +774,7 @@ function checkArray(key1, key2, aArray) {
   }
   return true;
 }
-
+/////////////////////html generator
 function checkRatings(oObject) {
   if (!Object.hasOwn(oObject, "complexityAm")) {
     return false;
@@ -1285,7 +1297,7 @@ function inputFormat(input) {
   oJson = oJson.replace(/\\t/g, "");
   return oJson.replaceAll("{", "{ \n").replaceAll("}", "} \n");
 }
-
+////////////////
 function listSolution(object) {
   let sSolution = sSolutionTemplate;
   let dependenciesTable = "";
@@ -1396,6 +1408,7 @@ async function fetchAPIData(url, token) {
   }
 }
 
+/////////////////////////data generator
 let owner = "";
 let aActionReturn = [];
 let sActiveTab;
@@ -2013,7 +2026,7 @@ function isObject(objValue) {
 function removeItemById(array, idToRemove) {
   return array.filter((item) => item.flow !== idToRemove);
 }
-
+/////////////////////
 if ("launchQueue" in window) {
   launchQueue.setConsumer(async (launchParams) => {
     for (const fileHandle of launchParams.files) {
