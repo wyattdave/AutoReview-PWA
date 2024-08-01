@@ -1,4 +1,4 @@
-const CACHE_NAME = `autoreview v2.4.6`;
+const CACHE_NAME = `autoreview v2.4.6.1`;
 
 // Use the install event to pre-cache all initial resources.
 self.addEventListener('install', event => {
