@@ -26,6 +26,21 @@ self.addEventListener('fetch', event => {
           statusText: 'Request Timeout'
         });
       }
+    try {
+      const fetchResponse = await fetch(event.request);
+      cache.put(event.request, fetchResponse.clone());
+      return fetchResponse;
+    } catch (e) {
+      const cachedResponse = await cache.match(event.request);
+      if (cachedResponse) {
+        return cachedResponse;
+      } else {
+        return new Response('Network and cache both failed.', {
+          status: 408,
+          statusText: 'Request Timeout'
+        });
+      }
     }
   })());
 });
+
