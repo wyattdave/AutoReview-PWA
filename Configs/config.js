@@ -80,6 +80,7 @@ let oRatingsTemplate = {
   "variablesRe": 5,
   "exceptionsAm": 1,
   "exceptionsRe": 0,
+};
 
 let aScoringTemplate = [
   {
