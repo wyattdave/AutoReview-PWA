@@ -8,7 +8,7 @@ document.getElementById("download").addEventListener("click", function() {
 
 function load(){
     content.innerHTML=sessionStorage.getItem("review");    
-    console.log(sessionStorage.getItem("references"));
+    console.log(sessionStorage.getItem("references"))
     document.getElementById("references").innerHTML=sessionStorage.getItem("references");    
 }
 

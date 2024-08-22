@@ -67,7 +67,6 @@ let aDownloadConfig = [
       "appId": "AppId",
       "opId": "OpId",
       "count": "Count"
-
       
     },
   },
@@ -82,7 +81,6 @@ let oRatingsTemplate = {
   "variablesRe": 5,
   "exceptionsAm": 1,
   "exceptionsRe": 0,
-
 };
 
 let aScoringTemplate = [
@@ -187,7 +185,6 @@ let aScoringTemplate = [
    "Name":"actionsGreen",
    "Score":10,
    "Note":"score added green scoring actions"
-
   },
 ];
 
@@ -201,7 +198,6 @@ let oNamingTemplate = {
     { "Type": "object", "Type": "o" },
     { "Type": "array", "Type": "a" }
   ]
-
 };
 
 let aComplexityTemplate = [
@@ -456,6 +452,5 @@ let aComplexityTemplate = [
   {
    "Name":"Do_until",
     "Complexity": 4,
-
   },
 ];
