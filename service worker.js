@@ -1,4 +1,5 @@
-const CACHE_NAME = `autoreview v3.0.0.6`;
+const CACHE_NAME = `autoreview v3.0.2`;
+
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
