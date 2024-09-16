@@ -190,12 +190,12 @@ let aScoringTemplate = [
 let oNamingTemplate = {
   "char": 1,
   "data": [
-    { "Type": "boolean", "Type": "b" },
-    { "Type": "string", "Type": "s" },
-    { "Type": "integer", "Type": "i" },
-    { "Type": "float", "Type": "f" },
-    { "Type": "object", "Type": "o" },
-    { "Type": "array", "Type": "a" }
+    { "Type": "boolean", "Letter": "b" },
+    { "Type": "string", "Letter": "s" },
+    { "Type": "integer", "Letter": "i" },
+    { "Type": "float", "Letter": "f" },
+    { "Type": "object", "Letter": "o" },
+    { "Type": "array", "Letter": "a" }
   ]
 };
 
