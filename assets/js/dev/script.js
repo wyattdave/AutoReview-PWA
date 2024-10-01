@@ -21,6 +21,8 @@ let aEnvironmentVar=[];
 let sEnvironment="";
 let oDependencies;
 let bUpdate=false;
+let aExceptions=[];
+let aConnectors=[];
 
 const iResetStorage = 8;
 const regExpFileID = new RegExp("[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}","m");
@@ -43,6 +45,7 @@ const tSolution =document.getElementById("solution-title");
 const iLoad = document.getElementById("loadSaved");
 const divConfig = document.getElementById("admin");
 const buLiveFlow = document.getElementById("loadLive");
+const butExcept = document.getElementById("exception-button");
 
 document.getElementById("review-button").addEventListener("click", OpenReview);
 document.getElementById("report-button").addEventListener("click", OpenReport);
@@ -56,15 +59,17 @@ document.getElementById("variablesCSVdownload").addEventListener("click", csvVar
 document.getElementById("connectionsCSVdownload").addEventListener("click", csvConnections);
 document.getElementById("loadSaved").addEventListener("click", loadSavedFlow);
 document.getElementById("compareFlows").addEventListener("click", OpenCompare);
+document.getElementById("addCompare-button").addEventListener("click", AddCompare);
 
+butExcept.addEventListener("click", OpenException);
 butSolution.addEventListener("click", OpenSolution);
 butShortcut.addEventListener("click", OpenShortcut);
 
 loadPlatform(pLoading)
 
-function DownloadCSV(sTable, data2) {
-  const oTable = aDownloadConfig.find((item) => item.name == sTable);
-  const data=sessionStorage.getItem(data);
+function DownloadCSV(sTable, data) {
+  const oTable = aDownloadConfig.find((item) => item.Name == sTable);
+  //const data=sessionStorage.getItem(data);
     let sName=oReport.name
     if (sName == false) {
       sName = "Flow";
@@ -89,7 +94,7 @@ function DownloadCSV(sTable, data2) {
         exportCSVFile(
           oTable.headers,
           aTemp,
-          sName + "-" + oTable.name
+          sName + "-" + oTable.Name
        );
       } else if (sTable == "Variables") {
         let aTemp=oReport.variableArray.slice(0);
@@ -100,16 +105,26 @@ function DownloadCSV(sTable, data2) {
         exportCSVFile(
           oTable.headers,
           aTemp,
-          sName + "-" + oTable.name
+          sName + "-" + oTable.Name
         );
        } else if (sTable == "Connections") {
         exportCSVFile(
           oTable.headers,
           oReport.connectionArray,
-          sName + "-" + oTable.name
+          sName + "-" + oTable.Name
         );
       }
     }
+}
+
+function OpenException() {
+  SaveData();
+  sessionStorage.setItem("exception", createException(aExceptions,oNaming.data,sExceptionTemplate,oDependencies));
+  i = sessionStorage.getItem("windowCounter");
+  const newWindow = window.open("exception.html", "Exceptions" + new Date().getTime() + i);
+  i++;
+  sessionStorage.setItem("windowCounter", i);
+
 }
 
 function OpenReview() {
@@ -183,7 +198,7 @@ function OpenDefinition() {
 function OpenSolution() {
   SaveData();
   i = sessionStorage.getItem("windowCounter");
-  sessionStorage.setItem("solution", listSolution(oSolution,sSolutionTemplate));
+  sessionStorage.setItem("solution", listSolution(oSolution,sSolutionTemplate,aExceptions,aConnectors));
   const newWindow = window.open("./solution.html", "Solution Contents" + new Date().getTime() + i);
   i++;
   sessionStorage.setItem("windowCounter", i);
@@ -208,6 +223,7 @@ function loadSavedFlow() {
   butSolution.style = "display: none";
   butReview.style = "width:100%; display:block";
   butReport.style = "width:100%; display:block";
+  butExcept.style = "width:100%; display:block";
   butData.style = "display:block;";
   butDiagram.style ="display:block;  width:100%;";
   spanVersion.style = "display:none;";
@@ -255,6 +271,10 @@ async function selectFile() {
 
 async function unpackNestedZipFiles(file) {
   try {
+    aExceptions=[];
+    aEnvironmentVar=[];
+    aConnectors=[];
+    document.getElementById("addCompare-button").style="color: #585858;";
     pLoading.style.color = "black";
     pLoading.innerText = "Loading...";
     if (file.name.endsWith(".zip") || file.name.endsWith(".msapp")) {
@@ -277,7 +297,7 @@ async function unpackNestedZipFiles(file) {
         for (const entry of entries) {
           const fileData = await entry.getData(new zip.TextWriter());
           if (
-            entry.filename.includes("definition.json") ||
+            (entry.filename.includes("definition.json") && !entry.filename.includes("Connector/")) ||
             (entry.filename.includes("Workflows/") &&
               !entry.filename.includes("apisMap") &&
               !entry.filename.includes("connectionsMap"))
@@ -287,7 +307,7 @@ async function unpackNestedZipFiles(file) {
             if (iDefinitionFind == iDefinitionCount) {
               pLoading.innerHTML = "Flow Found...Loading...";
 
-              review(entry, "flow", fileData);
+              review(entry, "flow", fileData,false);
               let node = document.createElement("li");
               node.innerHTML = entry.filename
                 .replace("Workflows/", "")
@@ -296,7 +316,7 @@ async function unpackNestedZipFiles(file) {
               node.value = entryIndex;
               lSolution.appendChild(node);
               node.addEventListener("click", function () {
-                review(entry, "flow", fileData);
+                review(entry, "flow", fileData,false);
               });
             } else {
               tSolution.style = "display: block";
@@ -314,27 +334,37 @@ async function unpackNestedZipFiles(file) {
               node.value = entryIndex;
               lSolution.appendChild(node);
               node.addEventListener("click", function () {
-                review(entry, "flow", fileData);
+                review(entry, "flow", fileData,false);
               });
+              review(entry, "flow", fileData,true);
             }
 
             iDefinitionCount++;
+          } else if (entry.filename.includes("definition.json") && entry.filename.includes("Connector/")){
+            const oConnector=JSON.parse(fileData)
+            aConnectors.push(
+              {
+                "name":oConnector.info.title,
+                "description":oConnector.info.description,
+                "host":oConnector.host
+              }
+            );
           } else if (entry.filename.includes("customizations.xml")) {
-            review(entry, "customizations", fileData);
+            review(entry, "customizations", fileData),false;
           } else if (entry.filename.includes("solution.xml")) {
-            review(entry, "solution", fileData);
+            review(entry, "solution", fileData,false);
           } else if (
             entry.filename.includes("environmentvariabledefinition.xml")
           ) {
-            review(entry, "environmentVar", fileData);
+            review(entry, "environmentVar", fileData,false);
           } else if (entry.filename.includes("complexityConfig.json")) {
-            review(entry, "complexity", fileData);
+            review(entry, "complexity", fileData,false);
           } else if (entry.filename.includes("namingConfig.json")) {
-            review(entry, "naming", fileData);
+            review(entry, "naming", fileData,false);
           } else if (entry.filename.includes("scoringConfig.json")) {
-            review(entry, "scoring", fileData);
+            review(entry, "scoring", fileData,false);
           } else if (entry.filename.includes("ratingsConfig.json")) {
-            review(entry, "ratings", fileData);
+            review(entry, "ratings", fileData,false);
           }
         }
       }
@@ -357,13 +387,15 @@ async function unpackNestedZipFiles(file) {
 }
 
 ////processes files from zip
-async function review(entry, type, sDefinition) {
+async function review(entry, type, sDefinition,bExcept) {
   try {
+
     if (type == "flow") {
       sDefinitionParsed = JSON.parse(sDefinition);
       butReview.style = "display:block;  width:100%;";
       butDiagram.style ="display:block;  width:100%;";
       butReport.style="display:block;  width:100%;";
+      butExcept.style="display:block;  width:100%;";
       butDefinition.style = "width:100%; display:block";
       oReport = null;
       let sId = "";
@@ -403,26 +435,30 @@ async function review(entry, type, sDefinition) {
             oReport.name = sFlowName.Name;
           }
         }
+        if(bExcept){
+          aExceptions.push(oReport);
+        }else{      
+          oSavedDef = sDefinitionParsed;
+          oSaved = oReport;
 
-        oSavedDef = sDefinitionParsed;
-        oSaved = oReport;
+          let sFlowDisplayName
+          if (pLoading.innerHTML != "" && pLoading.innerHTML != null) {
+            sFlowDisplayName = pLoading.innerHTML
+            .replace("_img src=_assets_img_old flow grey fill.svg__&nbsp;", "")
+            .replace('<img src="assets/img/old flow grey fill.svg">', "");
+          }
 
-        let sFlowDisplayName
-        if (pLoading.innerHTML != "" && pLoading.innerHTML != null) {
-          sFlowDisplayName = pLoading.innerHTML
-          .replace("_img src=_assets_img_old flow grey fill.svg__&nbsp;", "")
-          .replace('<img src="assets/img/old flow grey fill.svg">', "");
+          oHTML=generateReport(oReport,sReviewTemplate,sReportTemplate,sFlowDisplayName);
+          butReview.style = "display:block;  width:100%;";
+          butDiagram.style ="display:block;  width:100%;";
+          butReport.style="display:block;  width:100%;";
+          butExcept.style="display:block;  width:100%;";
+          butData.style = "display:block;";
+
+          spanVersion.style = "display:none;";
+          divCSV.style = "display:block; width:100%;";
+          divAdmin.style = "display:none;";
         }
-
-        oHTML=generateReport(oReport,sReviewTemplate,sReportTemplate,sFlowDisplayName);
-        butReview.style = "display:block;  width:100%;";
-        butDiagram.style ="display:block;  width:100%;";
-        butReport.style="display:block;  width:100%;";
-        butData.style = "display:block;";
-
-        spanVersion.style = "display:none;";
-        divCSV.style = "display:block; width:100%;";
-        divAdmin.style = "display:none;";
       } else {
         pLoading.innerHTML = oReport.error;
         spanVersion.style = "display:block;";

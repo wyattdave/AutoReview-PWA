@@ -7,9 +7,7 @@ document.getElementById("download").addEventListener("click", function() {
   });
 
 function load(){
-    content.innerHTML=sessionStorage.getItem("review");    
-    console.log(sessionStorage.getItem("references"))
-    document.getElementById("references").innerHTML=sessionStorage.getItem("references");    
+    content.innerHTML=sessionStorage.getItem("exception");    
 }
 
 function downloadHTML(){
@@ -17,12 +15,12 @@ function downloadHTML(){
     let sName=document.getElementById("target-flowName").innerHTML.replace('&nbsp;','');
     sHTML='<!doctype html><html lang="en">'+sHTML+"</html>";
     sHTML=sHTML.replace('<div class="mui--text-black mui--text-body2" style="color:white; text-align:right;" id="download">Download</div>',"");
-    sHTML=sHTML.replaceAll('<script src="assets/js/reviewLoad.js"></script>','');
+    sHTML=sHTML.replaceAll('<script src="assets/js/exceptionLoad.js"></script>','');
     
     const element = document.createElement("a");
     element.setAttribute("href", "data:text/plain;charset=utf-8," + 
     encodeURIComponent(sHTML));
-    element.setAttribute("download", sName+" Review.html");
+    element.setAttribute("download", sName+" Report.html");
     element.style.display = "none";
     document.body.appendChild(element);
     element.click();

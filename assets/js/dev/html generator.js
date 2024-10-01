@@ -499,11 +499,12 @@ function inputFormat(input) {
     return oJson.replaceAll("{", "{ \n").replaceAll("}", "} \n");
 }
 
-function listSolution(object,sSolutionTemplate) {
+function listSolution(object,sSolutionTemplate,aFlows,aConnectors) {
     let sSolution = sSolutionTemplate;
     let dependenciesTable = "";
     let variablesTable = "";
     let connectionsTable = "";
+
     sSolution = sSolution.replace(
       "{flowName}",
       oDependencies.ImportExportXml.SolutionManifest.UniqueName
@@ -518,18 +519,36 @@ function listSolution(object,sSolutionTemplate) {
     );
     sSolution = sSolution.replace("{date}", getToday());
   
+    let flowTable='<table class="mui-table mui-table--bordered" id="flowTable" ><thead><tr><th>Name</th><th>Trigger</th><th>Premium</th><th>Actions</th><th>Variables</th></tr></thead><tbody>';
+    let connectorTable='<table class="mui-table mui-table--bordered" id="connectorTable" ><thead><tr><th>Name</th><th>Description</th><th>Host</th></tr></thead><tbody>';
+   
+    aFlows.forEach(data =>{       
+        flowTable+='<tr><td>'+data.name +'</td><td>'+data.trigger+'</td><td>'+data.premium +'</td><td>'+data.steps +'</td><td>'+data.variables+'</td><tr>'  
+    })
+    flowTable+='</table>';
+
+    aConnectors.forEach(data =>{       
+        connectorTable+='<tr><td>'+data.name +'</td><td>'+data.description+'</td><td>'+data.host +'</td><tr>'  
+    })
+    connectorTable+='</table>';
+
     if (object.ConnectionRefs.length > 0) {
-      console.log(object.ConnectionRefs);
+     
       connectionsTable =
         '<table class="mui-table mui-table--bordered"><thead><tr><th>Name</th><th>Type</th><th>id</th><th>Cusomizable</th></tr></thead><tbody>';
       object.ConnectionRefs.forEach((item) => {
+        let sType="";
+        if(item.connectorid){
+           sType= item.connectorid.split("/apis/")[1] 
+        }            
+        
         let bCustomise = item.iscustomizable == 1;
         connectionsTable =
           connectionsTable +
           "<tr><td>" +
           item.connectionreferencedisplayname +
           "</td><td>" +
-          item.connectorid.split("/apis/")[1] +
+          sType+
           "</td><td>" +
           item.connectionreferencelogicalname +
           "</td><td>" +
@@ -577,21 +596,31 @@ function listSolution(object,sSolutionTemplate) {
   
       aEnvironmentVar.forEach((item) => {
         let bCustomise = item.environmentvariabledefinition.iscustomizable == 1;
+        let sDefault="";
+        let sType="";
+        if( item?.environmentvariabledefinition?.displayname?.default != undefined){
+            sDefault= item.environmentvariabledefinition.displayname.default
+        }
+        if( item?.environmentvariabledefinition?.type != undefined){
+            sType=  item.environmentvariabledefinition.type
+        }
         variablesTable =
           variablesTable +
           "<tr><td>" +
-          item.environmentvariabledefinition.displayname.default +
+          sDefault +
           "</td><td>" +
-          item.environmentvariabledefinition.type +
+          sType+
           "</td><td>" +
           bCustomise +
           "</td></tr>";
       });
       variablesTable += "</tbody></table>";
     }
+    sSolution = sSolution.replace("{flowsTable}", flowTable);
     sSolution = sSolution.replace("{connectionsTable}", connectionsTable);
     sSolution = sSolution.replace("{variablesTable}", variablesTable);
     sSolution = sSolution.replace("{dependenciesTable}", dependenciesTable);
+    sSolution = sSolution.replace("{connectorsTable}", connectorTable);
     sSolution = sSolution.replace("{json}", JSON.stringify(object, undefined, 2));
   
     return sSolution;

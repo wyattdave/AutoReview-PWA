@@ -72,11 +72,16 @@ function loadPlatform(pLoading){
     localStorage.setItem("complexity",JSON.stringify(aComplexityTemplate));
 }
 
+function AddCompare(){
+    localStorage.setItem("compare",JSON.stringify(sDefinitionParsed));
+    document.getElementById("addCompare-button").style="color: red;";
+}
+
 function OpenCompare(){
     let oSavedDefenition;
     let aDifferences=[];
     let sHtml2 =changeTemplate
-    const data=localStorage.getItem("definition");
+    const data=localStorage.getItem("compare");
       if ( data != undefined ) {
         oSavedDefenition = JSON.parse(data);
         let sDifferences = DeepDiff(sDefinitionParsed, oSavedDefenition);
