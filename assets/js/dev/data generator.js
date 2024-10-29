@@ -67,7 +67,7 @@ function CreateReview(
             sTriggerdata = JSON.stringify(value.inputs.parameters);
         }
         if (value?.recurrance != null) {
-            sTriggerRecur = key.recurrance;
+            sTriggerRecur = value.recurrance;
         }
         if (value?.conditions != null) {
             if (value.conditions[0]?.expression != null) {
