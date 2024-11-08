@@ -211,7 +211,7 @@ function generateReport(data,sReview,sReport,sFlowDisplayName) {
     sReport = sReport.replace("{actionsTable}", actionsTable);
 
     let inputTable =
-        '<table class="mui-table mui-table--bordered" id="inputTable"><thead><tr><th style="width:24%">Name</th><th style="width:14%">Type</th><th style="width:6%">Env</th><th>Inputs</th></tr></thead><tbody>';
+        '<table class="mui-table mui-table--bordered" id="inputTable"><thead><tr><th style="width:24%">Name</th><th style="width:14%">Type</th><th style="width:8%">Secure</th><th style="width:6%">Env</th><th>Inputs</th></tr></thead><tbody>';
     data.actionArray.forEach((item) =>
         inputTable +=
             "<tr><td id='" +
@@ -222,6 +222,8 @@ function generateReport(data,sReview,sReport,sFlowDisplayName) {
             item.name +
             "</a></td><td>" +
             item.step +
+            "</td><td>" +
+            item.secure.replace(",","<br>") +
             "</td><td>" +
             item.environmentB +
             "</td><td><div contentEditable='true' style='max-height=100px; overflow-y:auto; resize:vertical;'><pre>" +

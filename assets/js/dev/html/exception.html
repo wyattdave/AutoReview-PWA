@@ -25,74 +25,96 @@
         </table>
     </div>
     <div id="content" class="mui-container-fluid" >
-        <div class="mui-row">
-            <div> <br> 
-                <div class="mui-row">
-                    <div class="mui-col-md-6">
-                        <div class="grid-container">
-                            <div class="grid-item">
-                                <div class="mui-panel" style="text-align: left;">
-                                    <div class="mui--text-black mui--text-title">Name</div>
-                                    <div class="mui--text-black mui--text-body2 overflowClass" contentEditable="true" id="target-flowName" >{flowName}</div>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <div class="mui-panel" style="text-align: left;">
-                                    <div class="mui--text-black mui--text-title">ID</div>
-                                    <div class="mui--text-black mui--text-body2">{flowId}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mui-col-md-6">
-                        <div class="grid-container">
-                            <div class="grid-item">
-                                <div class="mui-panel" style="text-align: left;">
-                                    <div class="mui--text-black mui--text-title">Owner</div>
-                                    <div class="mui--text-black mui--text-body2 overflowClass" contentEditable="true">{owner}</div>      
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <div class="mui-panel" style="text-align: left;">
-                                    <div class="mui--text-black mui--text-title">Date</div>
-                                    <div class="mui--text-black mui--text-body2">{date}</div>                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+      <div class="mui-row">
+        <div> 
+          <br> 
+          <div class="mui-row">
+              <div class="mui-col-md-6">
+                  <div class="grid-container">
+                      <div class="grid-item">
+                          <div class="mui-panel" style="text-align: left;">
+                              <div class="mui--text-black mui--text-title">Name</div>
+                              <div class="mui--text-black mui--text-body2 overflowClass" contentEditable="true" id="target-flowName" >{flowName}</div>
+                          </div>
+                      </div>
+                      <div class="grid-item">
+                          <div class="mui-panel" style="text-align: left;">
+                              <div class="mui--text-black mui--text-title">Version</div>
+                              <div class="mui--text-black mui--text-body2">{flowId}</div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="mui-col-md-6">
+                  <div class="grid-container">
+                      <div class="grid-item">
+                          <div class="mui-panel" style="text-align: left;">
+                              <div class="mui--text-black mui--text-title">Publisher</div>
+                              <div class="mui--text-black mui--text-body2 overflowClass" contentEditable="true">{owner}</div>      
+                          </div>
+                      </div>
+                      <div class="grid-item">
+                          <div class="mui-panel" style="text-align: left;">
+                              <div class="mui--text-black mui--text-title">Date</div>
+                              <div class="mui--text-black mui--text-body2">{date}</div>                                    
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <br>
+          <div class="mui-panel">
+              <div class="mui--text-black-54 mui--text-title">Flows                      
+              </div>
+              <div class="mui-divider"></div> 
+              <br> 
+              {flowsTable} 
+              <p><a href="#!" class="topPadding"id="clickFlows">Show Comments</a></p>
+              <div class="topPadding mui-textfield" style="Display:none" id="divFlows"> 
+                <textarea placeholder="Input your comments" style="width:100%" rows="4"></textarea>
+              </div>
+          </div>
+          <br>
+          <div class="mui-panel">
+              <div class="mui--text-black-54 mui--text-title">Exceptions 
+                <div style="float:right"> 
+                  <input style="width:200px; padding-left:50px" class="filters" type="text" id="exceptionsInput" placeholder="&#x1f50d; Filter" title="Type in a name"> 
+                  <select id="exceptionsSelect" class="filters">
+                    <option value=0 selected="selected">Flow</option>
+                    <option value=1>Area</option>
+                    <option value=2>Value</option>
+                    <option value=3>Level</option>
+                    <option value=4>Failed Reason</option>
+                  </select> 
                 </div>
-               <br>
-                <div class="mui-panel">
-                    <div class="mui--text-black-54 mui--text-title">Exceptions <div style="float:right"> <input
-                                style="width:200px; padding-left:50px" class="filters" type="text" id="exceptiopnsInput"
-                                placeholder="&#x1f50d; Filter" title="Type in a name"> <select id="exceptionsSelect"
-                                class="filters">
-                                <option value=0 selected="selected">Area</option>
-                                <option value=1>Value</option>
-                                <option value=2>Level</option>
-                                <option value=3>Failed Reason</option>
-                            </select> </div>
-                    </div>
-                    <div class="mui-divider"></div> <br> {exceptionsTable} <p><a href="#!" class="topPadding"
-                            id="clickVariables">Show Comments</a></p>
-                    <div class="topPadding mui-textfield" style="Display:none" id="divVariables"> <textarea
-                            placeholder="Input your comments" style="width:100%" rows="4"></textarea> </div>
-                </div>
-            </div>
+              </div>
+              <div class="mui-divider"></div>
+              <br>
+              {exceptionsTable} 
+              <p><a href="#!" class="topPadding" id="clickExceptions">Show Comments</a></p>
+              <div class="topPadding mui-textfield" style="Display:none" id="divExceptions"> 
+                <textarea placeholder="Input your comments" style="width:100%" rows="4"></textarea>
+              </div>
+          </div>
         </div>
+      </div>
     </div> 
 </div>  
 <button id="load" style="visibility:hidden">Load</button>
 </body>
 <script src="assets/js/exceptionLoad.js"></script>
 <script>
-const actionSelectElem = document.getElementById("exceptionsSelect");
-const actionIElem = document.getElementById("exceptiopnsInput");
+const exceptionSelectElem = document.getElementById("exceptionsSelect");
+const exceptionElem = document.getElementById("exceptiopnsInput");
 
 
-actionSelectElem.addEventListener("change", function() {
-  actionIElem.value="";
-  filterActionTable("exceptionsTable","exceptiopnsInput",-1);
+exceptionSelectElem.addEventListener("change", function() {
+  exceptionElem.value="";
+  filterActionTable("exceptionTable","exceptiopnsInput",-1);
+});
+
+exceptionElem.addEventListener("change", function() {
+  filterActionTable("exceptionTable","exceptiopnsInput",exceptionSelectElem.value);
 });
 
 const startClear = document.getElementById("restScroll");
@@ -101,8 +123,19 @@ startClear.addEventListener("click", function(e) {
   topFunction()
 });
 
-startClear.click();
+const exceptElem = document.getElementById("clickExceptions");
+exceptElem.addEventListener("click", function(e) {
+  e.stopPropagation();
+  showComments("divExceptions");
+});
 
+const flowsElem = document.getElementById("clickFlows");
+flowsElem.addEventListener("click", function(e) {
+  e.stopPropagation();
+  showComments("divFlows");
+});
+
+startClear.click();
 
 function showComments(sElem){
   let commentsElem=document.getElementById(sElem);
