@@ -202,7 +202,8 @@ function CreateReview(
         if (oTempItem.hasOwnProperty("actions")) {
             delete oTempItem.actions;
         }
-        let aEnvironVar = JSON.stringify(oTempItem).match(regExpEnviron);
+
+        let aEnvironVar = JSON.stringify(removeCircularReferences(oTempItem)).match(regExpEnviron);
 
         let bEnvironVar = false;
         if (aEnvironVar) {
@@ -215,7 +216,7 @@ function CreateReview(
         }
 
         if (!bEnvironVar) {
-            aEnvironVar = JSON.stringify(oTempItem).match(regExpEnviron2);
+            aEnvironVar = JSON.stringify(removeCircularReferences(oTempItem)).match(regExpEnviron2);
             if (aEnvironVar) {
             aEnvironVar = aEnvironVar.filter(
                 (object) => object != "@{parameters('$authentication')"
@@ -284,7 +285,7 @@ function CreateReview(
             name: item.operationName,
             id: sId,
             hashId: sId + "###" + (index + 1),
-            object: JSON.stringify(item),
+            object: JSON.stringify(removeCircularReferences(item)),
             type: item.type,
             index: index + 1,
             parent: item.parent
@@ -600,6 +601,31 @@ function isObject(objValue) {
         objValue && typeof objValue === "object" && objValue.constructor === Object
     );
 }
+
+function removeCircularReferences(obj, seen = new WeakSet()) {
+    if (typeof obj === 'object' && obj !== null) {
+        if (seen.has(obj)) {
+            return '[Circular]'; // Replace circular reference
+        }
+        seen.add(obj);
+
+        if (Array.isArray(obj)) {
+            return obj.map((item) => removeCircularReferences(item, seen));
+        } else {
+            return Object.fromEntries(
+                Object.entries(obj).map(([key, value]) => [
+                    key,
+                    removeCircularReferences(value, seen),
+                ])
+            );
+        }
+    }
+    return obj;
+}
+
+const sanitizedObj = removeCircularReferences(obj);
+console.log(JSON.stringify(sanitizedObj));
+
 
 
 /////

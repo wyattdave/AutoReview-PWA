@@ -125,14 +125,14 @@ function OpenCompare(){
   
 
 function SaveData(){
-    localStorage.setItem("saved", JSON.stringify(oReport));
+    localStorage.setItem("saved", JSON.stringify(removeCircularReferences(oReport)));
     localStorage.setItem("definition", JSON.stringify(sDefinitionParsed));
     const oDiagramSave={
       name:oReport.name,
       id:oReport.id,
       data:oReport.actionArray
     }
-    sessionStorage.setItem("diagram", JSON.stringify(oDiagramSave));
+    sessionStorage.setItem("diagram", JSON.stringify(removeCircularReferences(oDiagramSave)));
 }
 
 function ResetConfigs() {
