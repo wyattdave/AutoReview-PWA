@@ -129,7 +129,7 @@ function OpenException() {
 
 function OpenReview() {
   SaveData();
-  sessionStorage.setItem("actions", JSON.stringify(oReport.actionArray));
+  sessionStorage.setItem("actions", JSON.stringify(removeCircularReferences(oReport.actionArray)));
   sessionStorage.setItem("review", oHTML.review);
   sessionStorage.setItem("references", oHTML.references);
   i = sessionStorage.getItem("windowCounter");
@@ -149,13 +149,13 @@ function OpenReport() {
 
 function OpenDiagram() {
   SaveData();
-  sessionStorage.setItem("actions", JSON.stringify(oReport.actionArray));
+  sessionStorage.setItem("actions", JSON.stringify(removeCircularReferences(oReport.actionArray)));
   sessionStorage.setItem("diagram", createDiagram(oReport.actionArray,oReport.name,oReport.trigger,oReport.actionObjectArray));
   sessionStorage.setItem("name", oReport.name);
   sessionStorage.setItem("id", oReport.id);
   const oTrigger={
     trigger: oReport.trigger,
-    triggerdata:oReport.triggerData,
+    triggerData:oReport.triggerData,
     triggerParam:oReport.triggerParam,
     triggerConfig:oReport.triggerConfig,
     triggerExpress:oReport.triggerExpress,
@@ -303,7 +303,6 @@ async function unpackNestedZipFiles(file) {
               !entry.filename.includes("connectionsMap"))
           ) {
             entryIndex++;
-            console.log(entry, "flow");
             if (iDefinitionFind == iDefinitionCount) {
               pLoading.innerHTML = "Flow Found...Loading...";
 

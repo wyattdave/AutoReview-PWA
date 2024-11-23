@@ -24,11 +24,12 @@ function CreateReview(
     let aExceptionList = [];
     let aApiList = [];
     let aActionObjects = [];
+    let aConnectionReferences=[];
     let sError = "";
 
     let sTrigger = "unknown";
     let sTriggerParam = "none";
-    let sTriggerdata = "none";
+    let sTriggerData = "none";
     let sTriggerConfig = "none";
     let sTriggerExpress = "none";
     let sTriggerInputs = "none";
@@ -39,7 +40,6 @@ function CreateReview(
     }
 
     const oInput = JSON.parse($inputString);
-    const keys = Object.keys(oInput.properties.definition.triggers);
     const aActions = getChildren(
         oInput.properties.definition,
         new Array(),
@@ -54,7 +54,24 @@ function CreateReview(
         sId = oInput.name;
     }
 
-    keys.forEach((key) => {
+    if (oInput.properties?.connectionReferences != undefined) {
+        const aConnectionKeys = Object.keys(oInput.properties.connectionReferences);
+        aConnectionKeys.forEach((key) => {
+            value = oInput.properties.connectionReferences[key];
+            if(value?.connection?.connectionReferenceLogicalName != null){                
+                aConnectionReferences.push(
+                    {
+                        connection:key,
+                        referenceName:value.connection.connectionReferenceLogicalName,
+                        type:value.api.name                    
+                    }
+                )
+            }
+        })    
+    }
+
+    const aTriggerKeys = Object.keys(oInput.properties.definition.triggers);
+    aTriggerKeys.forEach((key) => {
         value = oInput.properties.definition.triggers[key];
         sTrigger = key;
         if (value?.inputs?.schema != null) {
@@ -64,7 +81,7 @@ function CreateReview(
             sTriggerParam = JSON.stringify(value.inputs);
         }
         if (value?.inputs?.parameters != null) {
-            sTriggerdata = JSON.stringify(value.inputs.parameters);
+            sTriggerData = JSON.stringify(value.inputs.parameters);
         }
         if (value?.recurrance != null) {
             sTriggerRecur = value.recurrance;
@@ -97,7 +114,6 @@ function CreateReview(
             sConnector = item.inputs.host.connectionName;
             sConApiID = item.inputs.host.apiId;
         } else {
-            //OpenApiConnection = item.type;
             sStep = item.type;
         }
 
@@ -171,7 +187,7 @@ function CreateReview(
         }
         let sSecure = "";
         if (item?.runtimeConfiguration?.secureData != null) {
-            sSecure = JSON.stringify(item.runtimeConfiguration.secureData);
+            sSecure = JSON.stringify(item.runtimeConfiguration.secureData).replace('{"properties":[','').replace(']}','').replaceAll('"','');
         }
         let sTimeout = "";
         if (item?.limit?.timeout != null) {
@@ -186,7 +202,8 @@ function CreateReview(
         if (oTempItem.hasOwnProperty("actions")) {
             delete oTempItem.actions;
         }
-        let aEnvironVar = JSON.stringify(oTempItem).match(regExpEnviron);
+
+        let aEnvironVar = JSON.stringify(removeCircularReferences(oTempItem)).match(regExpEnviron);
 
         let bEnvironVar = false;
         if (aEnvironVar) {
@@ -199,7 +216,7 @@ function CreateReview(
         }
 
         if (!bEnvironVar) {
-            aEnvironVar = JSON.stringify(oTempItem).match(regExpEnviron2);
+            aEnvironVar = JSON.stringify(removeCircularReferences(oTempItem)).match(regExpEnviron2);
             if (aEnvironVar) {
             aEnvironVar = aEnvironVar.filter(
                 (object) => object != "@{parameters('$authentication')"
@@ -268,7 +285,7 @@ function CreateReview(
             name: item.operationName,
             id: sId,
             hashId: sId + "###" + (index + 1),
-            object: JSON.stringify(item),
+            object: JSON.stringify(removeCircularReferences(item)),
             type: item.type,
             index: index + 1,
             parent: item.parent
@@ -380,9 +397,14 @@ function CreateReview(
     //// connection refs
     getDistinct(aActionReturn).forEach((item) => {
         const oAction = aActionReturn.find((object) => object.connector == item);
+        let sAppId=oAction.apiId;
+        const oConnectionRef = aConnectionReferences.find((ref) => {return ref.connection==item});
+        if(oConnectionRef){
+            sAppId=oConnectionRef.referenceName
+        }
         aConnectionReturn.push({
             conName: item,
-            appId: oAction.apiId,
+            appId: sAppId,
             opId: oAction.step,
             count: aActionReturn.filter((object) => object.connector == item).length,
         });
@@ -447,7 +469,7 @@ function CreateReview(
         environment: sEnvironment,
         owner: sOwner,
         trigger: sTrigger,
-        triggerData: sTriggerdata,
+        triggerData: sTriggerData,
         triggerParam: sTriggerParam,
         triggerConfig: sTriggerConfig,
         triggerExpress: sTriggerExpress,
@@ -464,8 +486,7 @@ function CreateReview(
         varNameUse: bUsed,
         composes: aActionReturn.filter((item) => item.type == "Compose").length,
         exception: aExceptionList.length,
-        exceptionHandleScope:
-        aExceptionList.filter((item) => item.step == "Scope").length > 0,
+        exceptionHandleScope: aExceptionList.filter((item) => item.step == "Scope").length > 0,
         exceptionScope: aExceptionScope.length > 0,
         exceptionTerminate: bExceptionTerminate,
         exceptionLink: bExceptionLink,
@@ -580,6 +601,31 @@ function isObject(objValue) {
         objValue && typeof objValue === "object" && objValue.constructor === Object
     );
 }
+
+function removeCircularReferences(obj, seen = new WeakSet()) {
+    if (typeof obj === 'object' && obj !== null) {
+        if (seen.has(obj)) {
+            return '[Circular]'; // Replace circular reference
+        }
+        seen.add(obj);
+
+        if (Array.isArray(obj)) {
+            return obj.map((item) => removeCircularReferences(item, seen));
+        } else {
+            return Object.fromEntries(
+                Object.entries(obj).map(([key, value]) => [
+                    key,
+                    removeCircularReferences(value, seen),
+                ])
+            );
+        }
+    }
+    return obj;
+}
+
+const sanitizedObj = removeCircularReferences(obj);
+console.log(JSON.stringify(sanitizedObj));
+
 
 
 /////
