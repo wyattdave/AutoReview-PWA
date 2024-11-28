@@ -306,7 +306,7 @@ async function unpackNestedZipFiles(file) {
             if (iDefinitionFind == iDefinitionCount) {
               pLoading.innerHTML = "Flow Found...Loading...";
 
-              review(entry, "flow", fileData,false);
+              review(entry, "flow", fileData,true);
               let node = document.createElement("li");
               node.innerHTML = entry.filename
                 .replace("Workflows/", "")
@@ -439,25 +439,26 @@ async function review(entry, type, sDefinition,bExcept) {
         }else{      
           oSavedDef = sDefinitionParsed;
           oSaved = oReport;
-
-          let sFlowDisplayName
-          if (pLoading.innerHTML != "" && pLoading.innerHTML != null) {
-            sFlowDisplayName = pLoading.innerHTML
-            .replace("_img src=_assets_img_old flow grey fill.svg__&nbsp;", "")
-            .replace('<img src="assets/img/old flow grey fill.svg">', "");
-          }
-
           oHTML=generateReport(oReport,sReviewTemplate,sReportTemplate,sFlowDisplayName);
-          butReview.style = "display:block;  width:100%;";
-          butDiagram.style ="display:block;  width:100%;";
-          butReport.style="display:block;  width:100%;";
-          butExcept.style="display:block;  width:100%;";
-          butData.style = "display:block;";
-
-          spanVersion.style = "display:none;";
-          divCSV.style = "display:block; width:100%;";
-          divAdmin.style = "display:none;";
+        
         }
+        let sFlowDisplayName
+        if (pLoading.innerHTML != "" && pLoading.innerHTML != null) {
+          sFlowDisplayName = pLoading.innerHTML
+          .replace("_img src=_assets_img_old flow grey fill.svg__&nbsp;", "")
+          .replace('<img src="assets/img/old flow grey fill.svg">', "");
+        }
+
+        
+        butReview.style = "display:block;  width:100%;";
+        butDiagram.style ="display:block;  width:100%;";
+        butReport.style="display:block;  width:100%;";
+        butExcept.style="display:block;  width:100%;";
+        butData.style = "display:block;";
+
+        spanVersion.style = "display:none;";
+        divCSV.style = "display:block; width:100%;";
+        divAdmin.style = "display:none;";
       } else {
         pLoading.innerHTML = oReport.error;
         spanVersion.style = "display:block;";

@@ -623,8 +623,6 @@ function removeCircularReferences(obj, seen = new WeakSet()) {
     return obj;
 }
 
-const sanitizedObj = removeCircularReferences(obj);
-console.log(JSON.stringify(sanitizedObj));
 
 
 
