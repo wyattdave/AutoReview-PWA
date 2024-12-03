@@ -4,7 +4,7 @@ let sDefinitionParsed = "";
 let oReport;
 let oLiveReport;
 let sCustomList = null;
-let  oHTML;
+let oHTML;
 let aConnectionTier=aConnectionTierBackup.value;;
 let i = 0;
 let iDefinitionFind = 0;
@@ -23,6 +23,7 @@ let oDependencies;
 let bUpdate=false;
 let aExceptions=[];
 let aConnectors=[];
+let bFirstFlow=false;
 
 const iResetStorage = 8;
 const regExpFileID = new RegExp("[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}","m");
@@ -277,6 +278,7 @@ async function unpackNestedZipFiles(file) {
     document.getElementById("addCompare-button").style="color: #585858;";
     pLoading.style.color = "black";
     pLoading.innerText = "Loading...";
+    bFirstFlow=true
     if (file.name.endsWith(".zip") || file.name.endsWith(".msapp")) {
       const zipReader = new zip.ZipReader(new zip.BlobReader(file));
       const entries = await zipReader.getEntries();
@@ -436,11 +438,28 @@ async function review(entry, type, sDefinition,bExcept) {
         }
         if(bExcept){
           aExceptions.push(oReport);
-        }else{      
+        }
+        if(!bExcept ||  bFirstFlow){ 
+          let sFlowDisplayName     
           oSavedDef = sDefinitionParsed;
           oSaved = oReport;
-          oHTML=generateReport(oReport,sReviewTemplate,sReportTemplate,sFlowDisplayName);
+          oHTML=generateReport(oReport,sReviewTemplate,sReportTemplate,sFlowDisplayName);        
         
+          if (pLoading.innerHTML != "" && pLoading.innerHTML != null) {
+            sFlowDisplayName = pLoading.innerHTML
+            .replace("_img src=_assets_img_old flow grey fill.svg__&nbsp;", "")
+            .replace('<img src="assets/img/old flow grey fill.svg">', "");
+          }       
+          butReview.style = "display:block;  width:100%;";
+          butDiagram.style ="display:block;  width:100%;";
+          butReport.style="display:block;  width:100%;";
+          butExcept.style="display:block;  width:100%;";
+          butData.style = "display:block;";
+
+          spanVersion.style = "display:none;";
+          divCSV.style = "display:block; width:100%;";
+          divAdmin.style = "display:none;";
+
         }
         let sFlowDisplayName
         if (pLoading.innerHTML != "" && pLoading.innerHTML != null) {
