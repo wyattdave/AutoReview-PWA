@@ -307,7 +307,12 @@ function CreateReview(
             aPosition.forEach((object) => {
                 item.positionIndex += "|" + Number(object.index);
                 item.positionType += "|" + object.type;
-                let sFullNest = getNesting(item.parent,aActionReturn) + "";
+                let sParent=item.parent;
+                if(typeof(item.parent)!="string"){
+                    console.log(item);
+                    sParent=sParent.parent;
+                }
+                let sFullNest = getNesting(sParent,aActionReturn) + "";
 
                 if (sFullNest.substring(sFullNest.length - 2, 2) == "|0") {
                     sFullNest = sFullNest.substring(0, sFullNest.length - 2);
