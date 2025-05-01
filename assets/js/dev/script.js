@@ -49,12 +49,11 @@ const divConfig = document.getElementById("admin");
 const buLiveFlow = document.getElementById("loadLive");
 const butExcept = document.getElementById("exception-button");
 
-
-
 //beta
 const divSolutionName = document.getElementById("solution-name");
 const butSolutionDiagram = document.getElementById("solutionDiagram-button");
 butSolutionDiagram.addEventListener("click", OpenSolutionDiagram);
+
 
 document.getElementById("review-button").addEventListener("click", OpenReview);
 document.getElementById("report-button").addEventListener("click", OpenReport);
@@ -156,6 +155,8 @@ function OpenSolutionDiagram() {
     })
   })
   const aChildFlows=aAllActions.filter((action) => action.type == "Workflow");
+  let sFilter=prompt("Would you like to filter out any flows containing search string?").toUpperCase();
+  if (sFilter==null || sFilter==""){sFilter="!£$%&^*&(()_)(¬`"}
   aFlowIds.forEach((flow) => {
     aChildFlows.filter((action) => action.childflow.toUpperCase() == flow.id).forEach((action) => {
       const oChildName=aFlowIds.find((item) => item.id == action.flowId.toUpperCase());
@@ -165,7 +166,10 @@ function OpenSolutionDiagram() {
       }else{
         sChildName=action.childflow;
       }
-      aLinks.push({link:"["+flow.name+"]-:>["+sChildName+"]\n"})
+      if(!flow.name.toUpperCase().includes(sFilter) && !sChildName.toUpperCase().includes(sFilter)){
+        aLinks.push({link:"["+flow.name+"]<:-["+sChildName+"]\n"})
+      }
+      
 
     })
   })
@@ -351,7 +355,7 @@ async function unpackNestedZipFiles(file) {
   }else{
     butSolutionDiagram.style.display="none";
   }
-  //try {
+  try {
     aExceptions=[];
     aEnvironmentVar=[];
     aConnectors=[];
@@ -425,7 +429,10 @@ async function unpackNestedZipFiles(file) {
               if(sPreviousFlow==""){
                 sPreviousFlow=entry.filename;
               }
+             
               review(entry, "flow", fileData,true);
+              lSolution.scrollTop = lSolution.scrollHeight;
+              document.getElementById(entry.filename).focus();
             }
 
             iDefinitionCount++;
@@ -469,10 +476,10 @@ async function unpackNestedZipFiles(file) {
       pLoading.innerHTML = "No a Zip file";
       console.log(file.name);
     }
-//  } catch (error) {
-//    console.log(error.message);
-//    pLoading.innerHTML = "Unexpected Error: " + error.message;
-//  }
+  } catch (error) {
+    console.log(error.message);
+    pLoading.innerHTML = "Unexpected Error: " + error.message;
+  }
 }
 
 ////processes files from zip
@@ -551,13 +558,12 @@ async function review(entry, type, sDefinition,bExcept) {
           divAdmin.style = "display:none;";
 
         }
-        let sFlowDisplayName
+        let sFlowDisplayName;
         if (pLoading.innerHTML != "" && pLoading.innerHTML != null) {
           sFlowDisplayName = pLoading.innerHTML
           .replace("_img src=_assets_img_old flow grey fill.svg__&nbsp;", "")
           .replace('<img src="assets/img/old flow grey fill.svg">', "");
         }
-
         
         butReview.style = "display:block;  width:100%;";
         butDiagram.style ="display:block;  width:100%;";
