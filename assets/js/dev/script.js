@@ -1,4 +1,5 @@
 ///By David Wyatt
+
 let sDefinition = "";
 let sDefinitionParsed = "";
 let oReport;
@@ -24,7 +25,7 @@ let bUpdate=false;
 let aExceptions=[];
 let aConnectors=[];
 let bFirstFlow=false;
-
+let sPreviousFlow="";//beta
 const iResetStorage = 8;
 const regExpFileID = new RegExp("[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}","m");
 const sHtml =  '<html><head><meta name="color-scheme" content="dark"></head><body>';
@@ -48,6 +49,13 @@ const divConfig = document.getElementById("admin");
 const buLiveFlow = document.getElementById("loadLive");
 const butExcept = document.getElementById("exception-button");
 
+
+
+//beta
+const divSolutionName = document.getElementById("solution-name");
+const butSolutionDiagram = document.getElementById("solutionDiagram-button");
+butSolutionDiagram.addEventListener("click", OpenSolutionDiagram);
+
 document.getElementById("review-button").addEventListener("click", OpenReview);
 document.getElementById("report-button").addEventListener("click", OpenReport);
 document.getElementById("data-button").addEventListener("click", OpenData);
@@ -65,6 +73,14 @@ document.getElementById("addCompare-button").addEventListener("click", AddCompar
 butExcept.addEventListener("click", OpenException);
 butSolution.addEventListener("click", OpenSolution);
 butShortcut.addEventListener("click", OpenShortcut);
+
+//beta
+const urlParams = new URLSearchParams(window.location.search);
+const sVersion = urlParams.get('version') || ""; 
+
+if(sVersion=="beta"){
+  document.getElementById("version").innerText+="-Beta";
+}
 
 loadPlatform(pLoading)
 
@@ -116,6 +132,56 @@ function DownloadCSV(sTable, data) {
         );
       }
     }
+}
+
+
+//beta
+function OpenSolutionDiagram() {
+  let sSolutionDiagram="#fillArrows: true\n#lineWidth: 2\n#fill:#569AE5\n#background: white\n#acyclicer: greedy\n#ranker: tight-tree\n#.data: visual=database fill=#EBDAF9\n#.trigger: visual=roundrect fill=#569AE5\n#.if: visual=rhomb fill=#2596be\n#.switch: visual=ellipse fill=#2596be\n#.scope: visual=frame fill=#808080\n#.foreach: visual=transceiver fill=#00C1A0\n#.until: visual=sender fill=#00C1A0\n#.var: visual=input fill=#9925be\n#.terminate: visual=receiver fill=#cc4747\n#.var: visual=input fill=#EBDAF9\n";
+  let aAllActions=[];
+  let aFlowIds=[]
+  let aLinks=[];
+  aExceptions.forEach((flow) => {
+    aFlowIds.push({id:flow.id,name:flow.name});
+    flow.actionObjectArray.forEach((action) => {
+      action.flowName=flow.name;
+      action.flowId=flow.id;
+      if(action.type=="Workflow"){
+        const oAction=JSON.parse(action.object)
+        action.childflow=oAction.inputs.host.workflowReferenceName
+      }else{
+        action.childflow="";
+      }
+      aAllActions.push(action);
+    })
+  })
+  const aChildFlows=aAllActions.filter((action) => action.type == "Workflow");
+  aFlowIds.forEach((flow) => {
+    aChildFlows.filter((action) => action.childflow.toUpperCase() == flow.id).forEach((action) => {
+      const oChildName=aFlowIds.find((item) => item.id == action.flowId.toUpperCase());
+      let sChildName="";
+      if(oChildName!=undefined){
+        sChildName=oChildName.name;
+      }else{
+        sChildName=action.childflow;
+      }
+      aLinks.push({link:"["+flow.name+"]-:>["+sChildName+"]\n"})
+
+    })
+  })
+  const aUniqueLinks=getUniqueValues(aLinks, "link");
+  aUniqueLinks.forEach((link) => {  
+    sSolutionDiagram+=link;
+  })
+
+  i = sessionStorage.getItem("windowCounter");
+  const newWindow = window.open("", "Solution Diagram" + new Date().getTime() + i);
+  newWindow.document.write(
+    sHtml +nomnoml.renderSvg(sSolutionDiagram)
+  );
+  i++;
+  sessionStorage.setItem("windowCounter", i);
+  
 }
 
 function OpenException() {
@@ -245,7 +311,16 @@ function csvConnections() {
   DownloadCSV("Connections", oSaved);
 }
 
-
+function selectFlow(element){
+  if(sVersion=="beta"){
+    if(sPreviousFlow!=""){
+      document.getElementById(sPreviousFlow).style=null;
+    }
+  
+    sPreviousFlow=element;
+    document.getElementById(element).style="background-color:grey";
+  }
+}
 
 /////////////////////////////
 const fileInput = document.getElementById("file-input");
@@ -271,7 +346,12 @@ async function selectFile() {
 }
 
 async function unpackNestedZipFiles(file) {
-  try {
+  if(sVersion=="beta"){
+    butSolutionDiagram.style.display="block";
+  }else{
+    butSolutionDiagram.style.display="none";
+  }
+  //try {
     aExceptions=[];
     aEnvironmentVar=[];
     aConnectors=[];
@@ -283,10 +363,12 @@ async function unpackNestedZipFiles(file) {
       const zipReader = new zip.ZipReader(new zip.BlobReader(file));
       const entries = await zipReader.getEntries();
       let entryIndex = 0;
+     
       if (entries && entries.length) {
         lSolution.style = "display: none";
         divDivider.style = "display: none";
         tSolution.style = "display: none";
+        divSolutionName.innerText="&nbsp;Solution Contents";//beta
         butSolution.style.display='none';
         lSolution.innerHTML = "";
         sCustomList = null;
@@ -315,6 +397,7 @@ async function unpackNestedZipFiles(file) {
                 .replace(regExpFileID, "")
                 .replace("-.json", "");
               node.value = entryIndex;
+              node.id=entry.filename;
               lSolution.appendChild(node);
               node.addEventListener("click", function () {
                 review(entry, "flow", fileData,false);
@@ -333,10 +416,15 @@ async function unpackNestedZipFiles(file) {
               );
               node.appendChild(textnode);
               node.value = entryIndex;
+              node.id=entry.filename;
               lSolution.appendChild(node);
               node.addEventListener("click", function () {
                 review(entry, "flow", fileData,false);
               });
+              //beta
+              if(sPreviousFlow==""){
+                sPreviousFlow=entry.filename;
+              }
               review(entry, "flow", fileData,true);
             }
 
@@ -381,10 +469,10 @@ async function unpackNestedZipFiles(file) {
       pLoading.innerHTML = "No a Zip file";
       console.log(file.name);
     }
-  } catch (error) {
-    console.log(error.message);
-    pLoading.innerHTML = "Unexpected Error: " + error.message;
-  }
+//  } catch (error) {
+//    console.log(error.message);
+//    pLoading.innerHTML = "Unexpected Error: " + error.message;
+//  }
 }
 
 ////processes files from zip
@@ -403,7 +491,9 @@ async function review(entry, type, sDefinition,bExcept) {
       if (entry.filename.match(regExpFileID)) {
         sId = entry.filename.match(regExpFileID)[0];
       }
-
+      if(sPreviousFlow!=""){
+        selectFlow(entry.filename);
+      }
       oReport = CreateReview(
         sDefinition,
         "unknown",
@@ -485,6 +575,7 @@ async function review(entry, type, sDefinition,bExcept) {
       }
     } else if (type == "customizations") {
       butSolution.style.display='block';
+  
       sCustomList = xmlToJson.parse(sDefinition);
 
       let sConnectionRefs = "";
@@ -553,8 +644,13 @@ async function review(entry, type, sDefinition,bExcept) {
         Roles: sRoles,
         LanguageCode: sLanguageCode,
       };
+
+    
     } else if (type == "solution") {
       oDependencies = xmlToJson.parse(sDefinition);
+      if(sVersion=="beta"){
+        divSolutionName.innerText=oDependencies.ImportExportXml.SolutionManifest.UniqueName;
+      }
     } else if (type == "environmentVar") {
       aEnvironmentVar.push(xmlToJson.parse(sDefinition));
     } else if (type == "complexity") {
@@ -688,6 +784,10 @@ async function fetchAPIData(url, token) {
   } catch (error) {
     console.error("Error fetching API data:", error);
   }
+}
+
+function getUniqueValues(array, key) {
+  return [...new Set(array.map(item => item[key]))];
 }
 
 /////////////////////
