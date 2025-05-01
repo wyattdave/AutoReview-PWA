@@ -368,7 +368,7 @@ async function unpackNestedZipFiles(file) {
         lSolution.style = "display: none";
         divDivider.style = "display: none";
         tSolution.style = "display: none";
-        divSolutionName.innerText="&nbsp;Solution Contents";//beta
+        divSolutionName.innerText=" Solution Contents";//beta
         butSolution.style.display='none';
         lSolution.innerHTML = "";
         sCustomList = null;
