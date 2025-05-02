@@ -136,7 +136,7 @@ function DownloadCSV(sTable, data) {
 
 //beta
 function OpenSolutionDiagram() {
-  let sSolutionDiagram="#fillArrows: true\n#lineWidth: 2\n#fill:#569AE5\n#background: white\n#acyclicer: greedy\n#ranker: tight-tree\n#.data: visual=database fill=#EBDAF9\n#.trigger: visual=roundrect fill=#569AE5\n#.if: visual=rhomb fill=#2596be\n#.switch: visual=ellipse fill=#2596be\n#.scope: visual=frame fill=#808080\n#.foreach: visual=transceiver fill=#00C1A0\n#.until: visual=sender fill=#00C1A0\n#.var: visual=input fill=#9925be\n#.terminate: visual=receiver fill=#cc4747\n#.var: visual=input fill=#EBDAF9\n";
+  let sSolutionDiagram="#direction: right\n#fillArrows: true\n#lineWidth: 2\n#fill:#569AE5\n#background: white\n#acyclicer: greedy\n#ranker: tight-tree\n#.data: visual=database fill=#EBDAF9\n#.trigger: visual=roundrect fill=#569AE5\n#.if: visual=rhomb fill=#2596be\n#.switch: visual=ellipse fill=#2596be\n#.scope: visual=frame fill=#808080\n#.foreach: visual=transceiver fill=#00C1A0\n#.until: visual=sender fill=#00C1A0\n#.var: visual=input fill=#9925be\n#.terminate: visual=receiver fill=#cc4747\n#.var: visual=input fill=#EBDAF9\n";
   let aAllActions=[];
   let aFlowIds=[]
   let aLinks=[];
@@ -162,12 +162,12 @@ function OpenSolutionDiagram() {
       const oChildName=aFlowIds.find((item) => item.id == action.flowId.toUpperCase());
       let sChildName="";
       if(oChildName!=undefined){
-        sChildName=oChildName.name;
+        sChildName=oChildName.name+"\n"+oChildName.id;
       }else{
         sChildName=action.childflow;
       }
       if(!flow.name.toUpperCase().includes(sFilter) && !sChildName.toUpperCase().includes(sFilter)){
-        aLinks.push({link:"["+flow.name+"]<:-["+sChildName+"]\n"})
+        aLinks.push({link:"["+flow.name+"\n"+flow.id+"]<:-["+sChildName+"]\n"})
       }
       
 
