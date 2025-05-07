@@ -144,7 +144,7 @@ function CreateReview(
             sPosition += key + "|";
             sRunAfter =
                 key + ":" + JSON.stringify(item.runAfter[key]).replaceAll(",", " | ");
-            if (JSON.stringify(item.runAfter[key]).includes("Failed")) {
+            if (JSON.stringify(item.runAfter[key]).toUpperCase().includes("FAILED")) {
                 sException = "Exception";
             }
             });

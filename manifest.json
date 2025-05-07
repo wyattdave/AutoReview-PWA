@@ -5,20 +5,20 @@
   "description": "Create Automated Review of Power Automate Cloud Flows",
   "start_url": "/",
   "background_color": "#044288",
-  "theme_color": "#ffffff",
+  "theme_color": "#044288",
   "orientation": "any",
   "display": "standalone",
   "icons": [
     {
-      "src": "/icon v2 128.png",
+      "src": "icon v2 128.png",
       "sizes": "128x128"
     },
     {
-      "src": "/icon v2 192.png",
+      "src": "icon v2 192.png",
       "sizes": "192x192"
     },
     {
-      "src": "/icon v2 512.png",
+      "src": "icon v2 512.png",
       "sizes": "512x512"
     }
   ],

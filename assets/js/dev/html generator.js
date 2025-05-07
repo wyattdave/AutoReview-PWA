@@ -161,7 +161,7 @@ function generateReport(data,sReview,sReport,sFlowDisplayName) {
         '<table class="mui-table mui-table--bordered"><thead><tr><th>Action</th><th>Name</th><th>Runafter</th></tr></thead><tbody>';
     data.exceptionArray.forEach((item) => {
         sLabel = "";
-        if (!item.runAfter.includes("TimedOut")) {
+        if (!item.runAfter.toUpperCase().includes("TIMEDOUT")) {
             iFail++;
             sLabel = sIconR;
         }
