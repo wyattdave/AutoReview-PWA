@@ -131,6 +131,7 @@ function DownloadCSV(sTable, data) {
         );
       }
     }
+  trackEvent('csv_downloaded', 'CSV was downloaded');
 }
 
 
@@ -168,9 +169,7 @@ function OpenSolutionDiagram() {
       }
       if(!flow.name.toUpperCase().includes(sFilter) && !sChildName.toUpperCase().includes(sFilter)){
         aLinks.push({link:"["+flow.name+"\n"+flow.id+"]<:-["+sChildName+"]\n"})
-      }
-      
-
+      }      
     })
   })
   const aUniqueLinks=getUniqueValues(aLinks, "link");
@@ -185,7 +184,7 @@ function OpenSolutionDiagram() {
   );
   i++;
   sessionStorage.setItem("windowCounter", i);
-  
+  trackEvent('solutiond_diagram_beta', 'soliution diagram was opend');
 }
 
 function OpenException() {
@@ -195,7 +194,7 @@ function OpenException() {
   const newWindow = window.open("exception.html", "Exceptions" + new Date().getTime() + i);
   i++;
   sessionStorage.setItem("windowCounter", i);
-
+  trackEvent('exception_used', 'Exception was used');
 }
 
 function OpenReview() {
@@ -207,6 +206,7 @@ function OpenReview() {
   const newWindow = window.open("review.html", "Review" + new Date().getTime() + i);
   i++;
   sessionStorage.setItem("windowCounter", i);
+  trackEvent('review_used', 'Review was used');
 }
 
 function OpenReport() {
@@ -216,6 +216,7 @@ function OpenReport() {
   const newWindow = window.open("report.html", "Report" + new Date().getTime() + i);
   i++;
   sessionStorage.setItem("windowCounter", i);
+  trackEvent('report_used', 'Report was used');
 }
 
 function OpenDiagram() {
@@ -235,6 +236,7 @@ function OpenDiagram() {
   }
   sessionStorage.setItem("trigger", JSON.stringify(oTrigger));
   window.open('diagram.html');
+  trackEvent('diagram_used', 'Diagram was used');
 }
 
 function OpenData() {
@@ -249,6 +251,7 @@ function OpenData() {
   );
   i++;
   sessionStorage.setItem("windowCounter", i);
+  trackEvent('data_usead', 'Data was used');
 }
 
 function OpenDefinition() {
@@ -262,8 +265,8 @@ function OpenDefinition() {
       "</pre></body></html>"
   );
   i++;
-  sessionStorage.setItem("windowCounter", i);
-
+  sessionStorage.setItem("windowCounter", i); 
+  trackEvent('definiton_used', 'Defintion was used');
 }
 
 function OpenSolution() {
@@ -273,6 +276,7 @@ function OpenSolution() {
   const newWindow = window.open("./solution.html", "Solution Contents" + new Date().getTime() + i);
   i++;
   sessionStorage.setItem("windowCounter", i);
+  trackEvent('solution_used', 'Solution was used');
 }
 
 function OpenShortcut() {
@@ -804,4 +808,17 @@ if ("launchQueue" in window) {
       unpackNestedZipFiles(file);
     }
   });
+}
+
+
+
+// Function to track events
+function trackEvent(action, label = '', value = '') {
+    if (typeof gtag === 'function') {
+        gtag('event', action, {
+            event_category: 'User Interaction',
+            event_label: label,
+            value: value
+        });
+    }
 }
