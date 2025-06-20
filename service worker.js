@@ -1,4 +1,4 @@
-const CACHE_NAME = `autoreview v3.2.1.0`;
+const CACHE_NAME = `autoreview v3.2.2.0`;
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
