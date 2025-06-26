@@ -325,10 +325,10 @@ function csvConnections() {
 function selectFlow(element){
   pLoading.style.color = "black";
     if(sPreviousFlow!=""){
-      document.getElementById(sPreviousFlow).style=null;
+      document.getElementById(sPreviousFlow).style="word-break: break-all;";
     }  
     sPreviousFlow=element;
-    document.getElementById(element).style="background-color:#569AE5";
+    document.getElementById(element).style="background-color:#569AE5;word-break: break-all;";
   
 }
 
@@ -363,10 +363,13 @@ async function unpackNestedZipFiles(file) {
     butSolutionDiagram.style.display="none";
   }
   try {
+    sPreviousFlow="";
     aExceptions=[];
     aEnvironmentVar=[];
     aConnectors=[];
-    document.getElementById("addCompare-button").style="color: #585858;";
+    if(sessionStorage.getItem("compare")==undefined || sessionStorage.getItem("compare")==null){
+      document.getElementById("addCompare-button").style="color: #585858;";
+    }    
     pLoading.style.color = "black";
     pLoading.innerText = "Loading...";
     bFirstFlow=true
@@ -408,6 +411,7 @@ async function unpackNestedZipFiles(file) {
                 .replace(regExpFileID, "")
                 .replace("-.json", "");
               node.value = entryIndex;
+              node.style="word-break: break-all;";
               node.id=entry.filename;
               lSolution.appendChild(node);
               node.addEventListener("click", function () {

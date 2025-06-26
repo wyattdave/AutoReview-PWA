@@ -73,7 +73,7 @@ function loadPlatform(pLoading){
 }
 
 function AddCompare(){
-    localStorage.setItem("compare",JSON.stringify(sDefinitionParsed));
+    sessionStorage.setItem("compare",JSON.stringify(sDefinitionParsed));
     document.getElementById("addCompare-button").style="color: red;";
 }
 
@@ -81,7 +81,7 @@ function OpenCompare(){
     let oSavedDefenition;
     let aDifferences=[];
     let sHtml2 =changeTemplate
-    const data=localStorage.getItem("compare");
+    const data=sessionStorage.getItem("compare");
       if ( data != undefined ) {
         oSavedDefenition = JSON.parse(data);
         let sDifferences = DeepDiff(sDefinitionParsed, oSavedDefenition);
@@ -120,6 +120,8 @@ function OpenCompare(){
         const newWindow = window.open("changes.html", "Comparison" + new Date().getTime() + i);  
         i++;
         sessionStorage.setItem("windowCounter", i);
+        sessionStorage.getItem("compare").clear();
+        document.getElementById("addCompare-button").style="color: #585858;";
       }
   }
   

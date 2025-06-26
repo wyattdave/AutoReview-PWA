@@ -101,6 +101,9 @@ function CreateReview(
 
     //// actions
     aActions.forEach((item, index) => {
+        if(item.operationName=="Html_to_text_4"){
+            console.log(item)
+        }
         let sId = "MISSING";
         if (item.metadata?.operationMetadataId != null) {
             sId = item.metadata.operationMetadataId;
@@ -521,9 +524,12 @@ function getNesting(parent,aActionReturn) {
 }
 
 function getChildren(object, aReturn, nested, parent) {
+    if(typeof parent === 'object'){
+        parent=parent.operationName
+    }
     if (object?.actions != undefined) {
         const keys = Object.keys(object.actions);
-        keys.forEach((key) => {
+        keys.forEach((key) => {          
             let value = object.actions[key];
             value.operationName = key;
                 (value.nestedLevel = nested),
@@ -535,7 +541,7 @@ function getChildren(object, aReturn, nested, parent) {
     }
     if (object?.else != undefined) {
         const keys = Object.keys(object.else.actions);
-        keys.forEach((key) => {
+        keys.forEach((key) => {            
             let value = object.else.actions[key];
             value.operationName = key;
             (value.nestedLevel = nested),
