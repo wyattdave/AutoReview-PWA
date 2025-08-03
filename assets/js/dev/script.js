@@ -48,8 +48,6 @@ const iLoad = document.getElementById("loadSaved");
 const divConfig = document.getElementById("admin");
 const buLiveFlow = document.getElementById("loadLive");
 const butExcept = document.getElementById("exception-button");
-
-//beta
 const divSolutionName = document.getElementById("solution-name");
 const butSolutionDiagram = document.getElementById("solutionDiagram-button");
 butSolutionDiagram.addEventListener("click", OpenSolutionDiagram);
@@ -75,9 +73,12 @@ butShortcut.addEventListener("click", OpenShortcut);
 
 //beta
 const urlParams = new URLSearchParams(window.location.search);
-const sVersion = urlParams.get('version') || ""; 
+let sVersion = urlParams.get('version') || ""; 
 
 if(sVersion=="beta"){
+  document.getElementById("version").innerText+="-Beta";
+}else{
+  sVersion=localStorage.getItem("version");
   document.getElementById("version").innerText+="-Beta";
 }
 
@@ -321,7 +322,6 @@ function csvConnections() {
   DownloadCSV("Connections", oSaved);
 }
 
-//beta v3.2.2
 function selectFlow(element){
   pLoading.style.color = "black";
     if(sPreviousFlow!=""){
@@ -356,7 +356,7 @@ async function selectFile() {
 }
 
 async function unpackNestedZipFiles(file) {
-    ///beta
+   
   if(sVersion=="beta"){
     butSolutionDiagram.style.display="block";
   }else{
@@ -436,7 +436,7 @@ async function unpackNestedZipFiles(file) {
               node.addEventListener("click", function () {
                 review(entry, "flow", fileData,false);
               });
-              //beta
+        
               if(sPreviousFlow==""){
                 sPreviousFlow=entry.filename;
               }
@@ -509,7 +509,7 @@ async function review(entry, type, sDefinition,bExcept) {
       if (entry.filename.match(regExpFileID)) {
         sId = entry.filename.match(regExpFileID)[0];
       }
-      //beta
+     
       if(sPreviousFlow!=""){
         selectFlow(entry.filename);
       }

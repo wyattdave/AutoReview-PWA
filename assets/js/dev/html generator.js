@@ -212,7 +212,11 @@ function generateReport(data,sReview,sReport,sFlowDisplayName) {
 
     let inputTable =
         '<table class="mui-table mui-table--bordered" id="inputTable"><thead><tr><th style="width:24%">Name</th><th style="width:14%">Type</th><th style="width:8%">Secure</th><th style="width:6%">Env</th><th>Inputs</th></tr></thead><tbody>';
-    data.actionArray.forEach((item) =>
+     data.actionArray.forEach((item) => {
+        let envir = item.environmentB;
+        if (sVersion == "beta") {
+            envir = item.environmentCount;
+        };
         inputTable +=
             "<tr><td id='" +
             item.hashId +
@@ -225,11 +229,11 @@ function generateReport(data,sReview,sReport,sFlowDisplayName) {
             "</td><td>" +
             item.secure.replace(",","<br>") +
             "</td><td>" +
-            item.environmentB +
+            envir +
             "</td><td><div contentEditable='true' style='max-height=100px; overflow-y:auto; resize:vertical;'><pre>" +
             inputFormat(item.detail) +
             "</pre></div></td></tr>"
-    );
+    })
 
     inputTable = inputTable + "</tbody></table>";
 

@@ -202,31 +202,24 @@ function CreateReview(
         }
 
         let oTempItem = item;
-        if (oTempItem.hasOwnProperty("actions")) {
-            delete oTempItem.actions;
+        
+        removeNestedActions(oTempItem);
+        if (oTempItem.hasOwnProperty("cases")) {
+            delete oTempItem.cases;
         }
-
         let aEnvironVar = JSON.stringify(removeCircularReferences(oTempItem)).match(regExpEnviron);
 
         let bEnvironVar = false;
+        let iEnvironVar = 0;
         if (aEnvironVar) {
+            console.log(JSON.stringify(removeCircularReferences(oTempItem)));
             aEnvironVar = aEnvironVar.filter(
             (object) => object != "@parameters('$authentication')"
             );
+            iEnvironVar = aEnvironVar.length;
             if (aEnvironVar.length > 0) {
                 bEnvironVar = true;
-            }
-        }
 
-        if (!bEnvironVar) {
-            aEnvironVar = JSON.stringify(removeCircularReferences(oTempItem)).match(regExpEnviron2);
-            if (aEnvironVar) {
-            aEnvironVar = aEnvironVar.filter(
-                (object) => object != "@{parameters('$authentication')"
-            );
-            if (aEnvironVar.length > 0) {
-                bEnvironVar = true;
-            }
             }
         }
 
@@ -276,6 +269,7 @@ function CreateReview(
             positionInfo: sPostionInfo,
             environmentVariables: JSON.stringify(aEnvironVar),
             environmentB: bEnvironVar,
+            environmentCount: iEnvironVar,
             notes: sNotes,
             parent: item.parent,
             apiId: sConApiID,
@@ -645,3 +639,17 @@ function removeItemById(array, idToRemove) {
 function distanceBetween(str, action, parent) {
     return Math.abs(str.indexOf(action) - str.indexOf(parent));
 }
+
+// Recursively delete all nested 'actions' properties
+        function removeNestedActions(obj) {
+            if (obj && typeof obj === 'object') {
+                if (obj.hasOwnProperty('actions')) {
+                    delete obj.actions;
+                }
+                for (const key in obj) {
+                    if (obj.hasOwnProperty(key) && typeof obj[key] === 'object') {
+                        removeNestedActions(obj[key]);
+                    }
+                }
+            }
+        }
