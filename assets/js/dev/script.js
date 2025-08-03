@@ -79,6 +79,8 @@ if(sVersion=="beta"){
   document.getElementById("version").innerText+="-Beta";
 }else{
   sVersion=localStorage.getItem("version");
+}
+if(sVersion=="beta"){
   document.getElementById("version").innerText+="-Beta";
 }
 
