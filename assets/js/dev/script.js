@@ -50,6 +50,7 @@ const buLiveFlow = document.getElementById("loadLive");
 const butExcept = document.getElementById("exception-button");
 const divSolutionName = document.getElementById("solution-name");
 const butSolutionDiagram = document.getElementById("solutionDiagram-button");
+
 butSolutionDiagram.addEventListener("click", OpenSolutionDiagram);
 
 
@@ -365,6 +366,7 @@ async function unpackNestedZipFiles(file) {
     butSolutionDiagram.style.display="none";
   }
   try {
+    document.getElementById("offer").style.display = "none";
     sPreviousFlow="";
     aExceptions=[];
     aEnvironmentVar=[];
