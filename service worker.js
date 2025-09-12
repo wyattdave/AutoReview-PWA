@@ -1,11 +1,51 @@
-const CACHE_NAME = `autoreview v3.2.4.1`;
+const CACHE_NAME = `autoreview v3.2.4.2`;
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
     try {
       await cache.addAll([
-        './'
+        './',
+        './index.html',
+        'manifest.json',
+        'icon v2 128.png',
+        'assets/img/apple-touch-icon.png',
+        'assets/img/logo.svg',
+        'assets/img/power devbox black.png',
+        'assets/css/mui.min-ar.css',
+        'assets/fontawsome/css/fontawesome.css',
+        'assets/fontawsome/css/solid.min.css',
+        'assets/css/style-ar.css',
+        'assets/js/lib/graphre.js',
+        'assets/js/lib/nomnoml.js',
+        'Configs/config.js',
+        'Configs/connectors.js',
+        'assets/js/lib/xmlToJson.js',
+        'assets/js/lib/jquery-1.10.2.js',
+        'assets/js/lib/zip.min.js',
+        'assets/js/platform.min.js',
+        'assets/js/dev/script.js',
+        'assets/js/exception generator.min.js',
+        'assets/js/data generator.min.js',
+        'assets/js/html generator.min.js',
+        'assets/js/lib/mui.min.js',
+        'assets/js/diagram.min.js',
+        'assets/js/lib/jsonToHTML.js',
+        'assets/js/lib/jsonToCsv.js',
+        'assets/js/lib/deep-diff.min.js',
+        'review.html',
+        'report.html',
+        'diagram.html',
+        'report v2.html',
+        'assets/img/logo.svg',
+        'assets/img/apple-touch-icon.png',
+        'assets/img/logo.svg',
+        'assets/img/power devbox black.png',
+        'assets/css/mui.min-ar.css',
+        'assets/fontawsome/css/fontawesome.css',
+        'assets/fontawsome/css/solid.min.css',
+        'assets/css/style-ar.css'
+
       ]);
     } catch (error) {
       console.error('Failed to cache files during install:', error);
