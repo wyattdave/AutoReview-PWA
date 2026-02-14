@@ -140,7 +140,7 @@ function CreateReview(
         let sPosition = "|";
         let sException = "Non-Exception";
         if (JSON.stringify(item.runAfter) == "{}" || item.runAfter==undefined || item.runAfter== null) {
-            sRunAfter= item.parent+":Success";
+            sRunAfter= item.parent+":Succeeded";
         }else{
             const keys = Object.keys(item.runAfter);
             keys.forEach((key) => {

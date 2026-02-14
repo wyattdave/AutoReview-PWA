@@ -25,7 +25,7 @@ let bUpdate=false;
 let aExceptions=[];
 let aConnectors=[];
 let bFirstFlow=false;
-let sPreviousFlow="";//beta
+let sPreviousFlow="";
 const iResetStorage = 8;
 const regExpFileID = new RegExp("[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}","m");
 const sHtml =  '<html><head><meta name="color-scheme" content="dark"></head><body>';
@@ -359,11 +359,7 @@ async function selectFile() {
 
 async function unpackNestedZipFiles(file) {
    
-  if(sVersion=="beta"){
-    butSolutionDiagram.style.display="block";
-  }else{
-    butSolutionDiagram.style.display="none";
-  }
+  butSolutionDiagram.style.display="block";
   try {
     sPreviousFlow="";
     aExceptions=[];
