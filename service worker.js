@@ -1,4 +1,4 @@
-const CACHE_NAME = `autoreview v3.2.6`;
+const CACHE_NAME = `autoreview v3.2.6.1`;
 
 // All local assets to precache for full offline support
 const PRECACHE_URLS = [

@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    button {
+      background-color: #044288 !important;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    #sidebar2 {
+      background-color: #044288;
+      padding: 15px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      width: 50px;
+      height: 100%;
+      padding-top: 30px;
+    }
+
+    .rotateDIV {
+      -webkit-transform: rotate(270deg);
+      -moz-transform: rotate(270deg);
+      -o-transform: rotate(270deg);
+      -ms-transform: rotate(270deg);
+      transform: rotate(270deg) !important;
+      position: absolute;
+      bottom: 50px;
+      left: 20px;
+      background: none;
+      transform-origin: 0 0;
+      color: white;
+      width: 50vh;
+      font-size: 1.5vh;
+    }
+
+    #content2 {
+      margin-left: 90px;
+    }
+
+    .slider {
+      width: 90%;
+      position: fixed;
+    }
+
+    /* MUI classes used in the page */
+    .mui-container-fluid {
+      box-sizing: border-box;
+      margin-right: 50px;
+      margin-left: 50px;
+    }
+
+    .mui-btn {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 18px;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, .87);
+      background-color: #FFF;
+      transition: all .2s ease-in-out;
+      display: inline-block;
+      height: 36px;
+      padding: 0 26px;
+      margin: 6px 0;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      text-align: center;
+      line-height: 36px;
+      vertical-align: middle;
+      white-space: nowrap;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mui-btn:hover,
+    .mui-btn:focus {
+      outline: 0;
+      text-decoration: none;
+      box-shadow: 0 0 2px rgba(0, 0, 0, .12), 0 2px 2px rgba(0, 0, 0, .2);
+    }
+
+    .mui-btn--primary {
+      color: #FFF;
+      background-color: #2196F3;
+    }
+
+    .mui-btn--primary:hover,
+    .mui-btn--primary:focus {
+      color: #FFF;
+      background-color: #39a1f4;
+    }
+
+    .mui--text-white {
+      color: #FFF;
+    }
+
+    .mui--text-body2 {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.429;
+    }
+  </style>
+  <link rel="icon" type="image/x-icon"
+    href="data:image/x-icon;base64,AAABAAEAICAAAAEAIACoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAABAAAL8yAAC/MgAAAAAAAAAAAACIQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4lDBv+KRQj/ikUI/4pFCP+KRQj/ikUI/4lDBf+IQgT/iEIE/4lEBv+JRAf/iUMG/4lDBv+JQwb/iUMG/4lDBv+JQwb/iUMG/4lDBv+JQwb/iUMG/4lEBv+KRQj/iUMF/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+JQwX/hT0C/4A0AP+ANQD/gDUA/4A1AP+ANQD/hj8D/4lDBf+IQwT/gz sB/4I5AP+DOwD/gzsA/4M7AP+DOwD/gzsA/4M7AP+DOwD/gzsA/4M7AP+EPAD/gzoA/380AP+GPwP/iUQG/4hCBP+IQgT/iEIE/4hCBP+IQgT/iUMF/4Q8AP+WWCT/uZFs/7iPav+4j2r/uI9q/7iPav+TUx3/hj8B/4Q8AP+pdUn/4dHB/97Mu//fzbz/3828/9/NvP/fzbz/3828/9/NvP/fzbz/3828/+DPvv/ey7r/w6CA/45MFf+EOwD/iUQG/4hCBP+IQgT/iEIE/4hDBf+HQAH/jUoP/+3j2v///////v79///////+/f3//////+TUxv+JRAf/gDUA/86xl////////fz7//////////////////////////////////////////////////7+/f//////7+Xd/5VWIv+FPQD/iUMG/4hCBP+IQgT/iUMG/4Q8AP+ZXin//f38//39/P/9/Pr//fz7//z7+v//////9/Lu/5FRF/+EOwD/klIZ/7WKY/+0iWL/s4Ve/7OGX/+zhl//s4Zf/7OGX/+0iGH/totl/7eMZv+0h2D/w6CB//bw6///////3sq6/4U9AP+JQwX/iEIE/4hCBP+JQwb/hDwA/5lcJ//9/Pv//////////v///////v7+///////38u7/kE8W/4Y/AP+GPwP/gDUA/4A1AP+ANQD/gDUA/4A1AP+ANQD/gDUA/4A1AP+ANQD/gDUA/4E3Av97LQD/p3NG/////v//////n2c0/4M6AP+JRAf/iEIE/4lEBv+EOwD/m2As///////////////+///////+/v7///////fz7/+RUBb/hj4A/4lEBv+KRQj/ikUI/4pFCP+KRQj/ikUI/4pFCP+KRQj/ikUI/4pFCP+KRQj/ikUI/4pGCP+DOwD/5tjM//////+vgFb/gTYA/4pFCP+IQgT/iUQG/4M7AP+cYi7//v7+//7+/v/+/v7///////7+/v//////9vHt/5FQF/+GPgD/iUMF/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iUMF/4U9AP/i0cP//////7CBWP+BNgD/ikUI/4hCBP+JQwb/hDwA/5ldKP/9/Pz//////////v///////v7+///////28Ov/j00T/4Y/AP+JQwX/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+JQwX/hT0A/+PTxP//////sIFY/4E2AP+KRQj/iEIE/4hCBP+IQwX/hj8A/9G1nv/7+Pb/9vDs//79/P/9+/r/+vf1/8Shg/+EOwD/iUQG/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4lDBv+EOwD/4c+///////+wgVj/gTYA/4pFCP+IQgT/iEIE/4hDBf+JQwb/hj8E/5FPFf+OSxD/7+bd/+nb0P+KRQj/hTwD/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iUMG/4Q7AP/gzb3//////7CBWP+BNgD/ikUI/4hCBP+IQgT/h0ED/4E3AP+COQD/hj8B/4M6AP/u5Nv/5tjL/4E2AP+KRQj/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEMF/4pFCP+KRQj/ikUI/4pFCP+KRQj/ikUI/4lDBf+JQwb/hDsA/+DOvv//////sIFY/4A2AP+KRQj/iEIF/4hBA/+JQwX/zK6U/8Cbev+GPgD/hj8A/+7k2//n2Mz/gzoA/4lDBv+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+HQAP/fzQA/380AP9/NAD/fzQA/380AP9/NAD/hj8D/4lEBv+DOwD/4M29//////+wgVj/gTYA/4pFCP+JRAb/gzoA/55kMv//////9e/q/49MEv+DOgD/7+Xc/+bXzP+COQD/ikUH/4hCBP+IQgT/iEIE/4hCBP+IQwX/h0AB/41KEP++mHb/x6eK/8Shgf/EoYL/x6aJ/8OfgP+SUhv/h0AB/4Q8AP/gzb3//////7CBWP+BNgD/ikUI/4lEB/+DOgD/n2c1///////07uj/kE8V/4E4AP/k1Mb/+/j2/4xIE/+DOgD/ikUH/4lEBv+JRAb/iUQG/4tHCv+BNwD/v5p4///////9/Pv////////////9/Pv//////8yulP+BNwD/hT4A/+DOvv//////sIFY/4E2AP+KRQj/iUQH/4M6AP+fZzX///////Xv6v+RUBb/fjIA/72WdP//////1bym/4pGCv+BOAD/gTgB/4E4AP+BNwD/gzoE/3gpAP/Eoof///////v59//9/Pv//fz7//v59///////1Lul/4E3AP+GPwD/49LD//////+wgVj/gTYA/4pFCP+JRAf/gzoA/59nNf//////9fDr/49OFP+FPgD/ikUL/93Jt/////////Lt/+TUxv/j08X/49PF/+TUxv/k1cf/4tHC//Lr5P////////7+/////////////fz7///////TuqP/gTcA/4Y/AP/j0sT//////7CBWP+BNgD/ikUI/4lEB/+DOgD/n2c1///////07uj/jkwR/4dAAf+HQAT/hj8G/7iOaf/k1Mb/7uXc/+3j2v/u5dz/7OHX/+zg1v/r3tP/9e/q//////////7////////////9/Pv//////9S6pP+BNwD/hj8A/+PSxP//////sIFY/4E2AP+KRQj/iUQH/4M6AP+fZzX///////Ps5v+NSg//hj8B/4lEBv+IQgX/gDYA/4M5AP+EPAD/hDwA/4Q8AP+DOwD/hT4E/3otAP++mXr///////z6+f/+/f3//v39//z6+f//////07mj/4E3AP+GPwD/49LE//////+wgVj/gTYA/4pFCP+JRAf/gzoA/59nNf//////9e/p/49MEv+GPwD/iEMF/4hCBP+KRQj/iUQG/4hCBf+IQgX/iEIF/4lDBf+LRgn/gDUA/8Gce////////fz7/////////////fz7///////SuKH/gTcA/4Y/AP/j0sT//////7CBWP+BNgD/ikUI/4lEB/+DOgD/n2c1///////18Ov/j00T/4Y/AP+JQwX/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4lDBv+EPAD/nWMw/+jbz//s4Nb/697U/+vf1f/r39X/7ODW/6dyRP+EOwD/hj4A/+PSxP//////sIFY/4E2AP+KRQj/iUQH/4M6AP+fZjT///////Xv6v+PThP/hj8A/4lDBf+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4lDBP+FPQL/hT0C/4lCA/+IQQP/iEED/4hCA/+GPgL/hDwC/4lEBv+FPQD/49LD//////+wgVj/gTYA/4pFCP+JRAf/gzoA/59nNf//////9vHt/45LFP+IQgP/ikUI/4lEB/+JRAf/iUQH/4lEB/+JRAf/iUQH/4lEB/+JRAf/iUQH/4pFCP+KRQf/iUQG/4lEBv+JRAb/iUQG/4pFCP+KRgn/ikYI/4Q7AP/l1sr//////6+AV/+BNgD/ikUI/4lDBv+FPQD/llgh//n28///////q3lQ/3osAP+DOwP/gjkA/4I5AP+COQD/gjkA/4I5AP+COQD/gjkA/4I5AP+COQD/gjkA/4M6AP+DOgD/gzoA/4M6AP+DOgD/gjkA/4M6Av98LgD/nmU1//37+f//////o209/4I5AP+JRAf/iEIE/4lEBv+COQD/1r2o///////z7ef/t4xn/6FrOv+hazr/oWo5/6FqOf+hajn/oWo5/6FqOf+hajn/oWo5/6FqOv+hajr/oWo6/6FqOv+hajr/oWo6/6FqOv+kb0D/om08/7KFXf/v5t7//////+bXyv+IQQT/iEIE/4hCBf+IQgT/iUMF/4U+AP+SUh3/7uPa///////+/v3//////////////////////////////////////////////////////////////////////////////////////////////////v7+///////28ez/nGIy/4M7AP+JRAb/iEIE/4hCBP+IQgT/iUQG/4Q8AP+PTRf/zbCV/+/l3f/17+r/9e/q//Xv6v/17+r/9e/q//Xv6v/17+r/9e/q//Xw6//38+//9/Pv//fz7//38+//9/Pv//fz7//28ez/9e7o//Xv6v/x6eL/1bul/5ZZJf+COQD/iUQG/4hCBP+IQgT/iEIE/4hCBP+IQgT/iUQG/4Y/A/+ANQD/ikUJ/49OFP+PTRP/j00T/49NE/+PTRP/j00T/49NE/+PTRP/j04U/5FQF/+RUBf/kVAX/5FQF/+RUBf/kVAX/5BOFf+PTRP/j04U/4xIDP+BNgD/hTwC/4lEBv+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iUMF/4pFCP+HQQP/hj8A/4Y/AP+GPwD/hj8A/4Y/AP+GPwD/hj8A/4Y/AP+GPwD/hj4A/4Y+AP+GPgD/hj4A/4Y+AP+GPgD/hj8A/4Y/AP+GPwD/h0AC/4pFB/+JQwb/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/iEIE/4hDBf+JQwX/iUMF/4lDBf+JQwX/iUMF/4lDBf+JQwX/iUMF/4lDBf+JQwX/iUMF/4lDBf+JQwX/iUMF/4lDBf+JQwX/iUMF/4lDBf+IQwX/iEIE/4hCBP+IQgT/iEIE/4hCBP+IQgT/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=">
+
+</head>
+
+<body>
+  </div>
+  <div id="sidebar2">
+    <div>
+      <img src="https://autoreview.powerdevbox.com/assets/img/autoreview.svg" alt="Logo" id="target-logo" style="width:50px; padding-right:10px">
+      <img src="assets/img/download.png" id="target-downloadSVG" style="width:48px; padding-right:10px; z-index: 1000;">
+      <div class="mui--text-white mui--text-body2" style="font-size:10px" id="download">Download</div>
+      <button id="target-downloadPNG" style="visibility: hidden;" class="mui-btn mui-btn--primary">PNG</button>
+    </div>
+    <h4 class="rotateDIV"><b id="target-solutionName"></b></h4>
+  </div>
+  <div id="content2" class="mui-container-fluid">
+    <button id="load" style="visibility:hidden">Load</button>
+    <button style="position:fixed; left:150px; top:30px; font-size:20px; display:none" id="target-zoomIn"
+      class="mui-btn mui-btn--primary">+ </button>
+    <button style="position:fixed; left:225px; top:30px; font-size:20px; display:none" id="target-zoomOut"
+      class="mui-btn mui-btn--primary">- </button>
+    <button style="position:fixed; left:300px; top:30px; display:none; display:none" id="target-reset"
+      class="mui-btn mui-btn--primary">x </button>
+    <input type="range" min="-10" max="50" value="0" id="target-zoom" class="slider">
+    <div id="target-svgDom" style="width:100%"></div>
+  </div>
+  <script>
+
+    const content = document.getElementById("target-svgDom");
+    const oSolution = JSON.parse(sessionStorage.getItem("solutionDiagram"));
+    const elmTitle = document.getElementById("target-solutionName");
+    const elmSVG = document.getElementById("target-svgDom");
+    let svgElm;
+    let iStartWidth;
+    content.onload = load();
+
+    function load() {
+      if(oSolution){
+        elmTitle.innerHTML = oSolution.name;
+        elmSVG.innerHTML = oSolution.svg;        
+      }
+      svgElm = document.getElementsByTagName("svg")[0];
+      svgElm.setAttribute("width", "100%");
+      svgElm.setAttribute("height", "100%");
+      let sWidth = svgElm.getAttribute("width");
+      iStartWidth = parseInt(sWidth.substring(0, sWidth.length - 1));
+    }
+
+    const elmZoom = document.getElementById("target-zoom");
+    const elmIn = document.getElementById("target-zoomIn");
+    const elmOut = document.getElementById("target-zoomOut");
+    const elmReset = document.getElementById("target-reset");
+    const elmKeyIcon = document.getElementById("target-keyIcon");
+    const elmDownloadSVG = document.getElementById("target-downloadSVG");
+    const downloadElem = document.getElementById("download");
+
+    elmDownloadSVG.addEventListener("click", downloadSVGAsText);
+    elmZoom.addEventListener("input", Zoom);
+    elmIn.addEventListener("click", ZoomIn);
+    elmOut.addEventListener("click", ZoomOut);
+    elmReset.addEventListener("click", ZoomReset);
+    document.getElementById("target-logo").addEventListener("click", toggleZoom);
+
+
+    function toggleZoom() {
+
+      if (bToggle) {
+        elmIn.style = "position:fixed; left:150px; top:30px; font-size:20px;";
+        elmOut.style = "position:fixed; left:225px; top:30px; font-size:20px;";
+        elmZoom.style = "display:none";
+        iWidth = iStartWidth;
+        svgElm.setAttribute("width", iWidth + "%");
+        bToggle = false;
+      } else {
+        elmZoom.style = "";
+        elmReset.style = "position:fixed; left:300px; top:30px; display:none;";
+        elmIn.style = "position:fixed; left:150px; top:30px; font-size:20px; display:none;";
+        elmOut.style = "position:fixed; left:225px; top:30px; font-size:20px; display:none";
+        iWidth = iStartWidth;
+        svgElm.setAttribute("width", iWidth + "%");
+        bToggle = true;
+      }
+    };
+
+    function Zoom() {
+      let sWidth = svgElm.getAttribute("width");
+      let iWidth = parseInt(sWidth.substring(0, sWidth.length - 1));
+      let iZoom = parseInt(elmZoom.value);
+
+      iWidth = iStartWidth + (iZoom * 10);
+      if (iWidth < 0) { iWidth = 0 }
+      svgElm.setAttribute("width", iWidth + "%");
+    };
+
+    function ZoomIn() {
+      let sWidth = svgElm.getAttribute("width");
+      let iWidth = parseInt(sWidth.substring(0, sWidth.length - 1));
+      iWidth = iWidth + 10;
+      svgElm.setAttribute("width", iWidth + "%");
+      elmReset.style = "position:fixed; left:300px; top:30px;"
+    };
+
+    function ZoomOut() {
+      let sWidth = svgElm.getAttribute("width");
+      let iWidth = parseInt(sWidth.substring(0, sWidth.length - 1));
+      iWidth = iWidth - 10;
+      svgElm.setAttribute("width", iWidth + "%");
+      elmReset.style = "position:fixed; left:300px; top:30px;;";
+    };
+
+    function ZoomReset() {
+      svgElm.setAttribute("width", "100%");
+      elmReset.style = "position:fixed; left:300px; top:30px; display:none;";
+    };
+
+    function downloadSVGAsText() {
+      const svg = document.querySelector("svg");
+      const base64doc = btoa(unescape(encodeURIComponent(svg.outerHTML)));
+      const a = document.createElement("a");
+      const e = new MouseEvent("click");
+      const sName = elmTitle.innerText;
+      a.download = sName + ".svg";
+      a.href = "data:image/svg+xml;base64," + base64doc;
+      a.dispatchEvent(e);
+    };
+
+    downloadElem.addEventListener("click", function () {
+      downloadHTML()
+    });
+
+    function downloadHTML() {
+
+      let sHTML = document.querySelector("html").innerHTML;
+      sHTML = '<!doctype html><html lang="en">' + sHTML + '</html>';
+      sHTML = sHTML.replace('<div class="mui--text-white mui--text-body2" style="font-size:10px" id="download">Download</div>', '');
+      sHTML = sHTML.replaceAll('<img src="assets/img/download.png" id="target-downloadSVG" style="width:48px; padding-right:10px; z-index: 1000;">', '<img src="assets/img/download.png" id="target-downloadSVG" style="width:48px; padding-right:10px; z-index: 1000; display:none;">');
+
+      const element = document.createElement("a");
+      element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(sHTML));
+      element.setAttribute("download",elmTitle.innerText+ " Diagram.html");
+      element.style.display = "none";
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+
+    };
+  </script>
+</body>
+
+</html>

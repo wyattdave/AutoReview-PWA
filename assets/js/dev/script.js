@@ -186,11 +186,8 @@ function OpenSolutionDiagram() {
 
 
     i = sessionStorage.getItem("windowCounter");
-    const newWindow = window.open("", "Solution Diagram" + new Date().getTime() + i);
-    newWindow.document.write(
-      sHtml +nomnoml.renderSvg(sSolutionDiagram)
-    );
-    i++;
+    sessionStorage.setItem("solutionDiagram", JSON.stringify({svg:nomnoml.renderSvg(sSolutionDiagram),name:oReport.name}));
+    const newWindow = window.open("Solution Diagram.html", "Solution Diagram" + new Date().getTime() + i);
     sessionStorage.setItem("windowCounter", i);
   }else{
     pLoading.innerText="No Child flows found";

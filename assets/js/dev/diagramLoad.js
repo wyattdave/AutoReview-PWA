@@ -197,6 +197,7 @@ function downloadHTML(){
   sHTML=sHTML.replaceAll('<script src="node_modules/nomnoml/dist/nomnoml.js"></script>','');
   sHTML=sHTML.replaceAll('<script src="node_modules/graphre/dist/graphre.js"></script>','');
   sHTML=sHTML.replaceAll('<img src="assets/img/key icon.png" id="target-keyIcon" style="width:48px; padding-right:10px; z-index: 1000;">','<img src="assets/img/key icon.png" id="target-keyIcon" style="visibility: hidden;">');
+      sHTML = sHTML.replaceAll('<img src="assets/img/download.png" id="target-downloadSVG" style="width:48px; padding-right:10px; z-index: 1000;">', '<img src="assets/img/download.png" id="target-downloadSVG" style="width:48px; padding-right:10px; z-index: 1000; display:none;">');
 
   const element = document.createElement("a");
   element.setAttribute("href", "data:text/plain;charset=utf-8,"+encodeURIComponent(sHTML));
