@@ -224,7 +224,7 @@ function CreateReview(
         }
 
         let sPostionInfo = "";
-        if (item.parent==sRunAfter.split(":")[0]) {
+        if (item.parent==sRunAfter.replace("[","").split(":")[0]) {
             sPostionInfo = "Internal";
         }
 
